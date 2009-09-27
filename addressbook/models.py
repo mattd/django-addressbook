@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.db import models
-from django.contrib.localflavor.us.models import USStateField, PhoneNumberField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
@@ -56,8 +55,8 @@ class StreetAddress(GenericRelationshipMixin, DateMixin):
         ('other', 'Other'),
     )
     address = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
-    state = USStateField(blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
     zip = models.CharField(max_length=10, blank=True, null=True)
     type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
@@ -76,10 +75,11 @@ class PhoneNumber(GenericRelationshipMixin, DateMixin):
         ('main', 'Main'),
         ('home', 'Home'),
         ('work', 'Work'),
+        ('mobile', 'Mobile'),
         ('fax', 'Fax'),
         ('other', 'Other'),
     )
-    number = PhoneNumberField(blank=True, null=True)
+    number = models.CharField(max_length=20, blank=True, null=True)
     type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
 
@@ -130,7 +130,7 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
 
     class Meta:
         verbose_name = 'IM account'
-        verbose_name_plural = 'IM Accounts'
+        verbose_name_plural = 'IM accounts'
 
     def __unicode__(self):
         return u'%s: %s' % (self.service, self.username)
@@ -142,7 +142,7 @@ class Note(GenericRelationshipMixin, DateMixin):
     reference_date = models.DateTimeField(null=True, blank=True)
 
     def __unicode__(self):
-        return u'%s' % self.note
+        return u'%s' % self.content
 
 
 class ClientInfoMixin(models.Model):
@@ -169,8 +169,8 @@ class Contact(ClientInfoMixin, DateMixin):
     organization = models.ForeignKey(Organization, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.full_name
