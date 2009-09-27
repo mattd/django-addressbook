@@ -1,0 +1,436 @@
+[
+    {
+        "pk": 1, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:39:37", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "address": "matthewtdawson@email.com", 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:39:31", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "address": "matt.dawson@webalize.com", 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:39:24", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "address": "matt@personal.com", 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:39:08", 
+            "object_id": 2, 
+            "content_type": 16, 
+            "address": "elizabeth.sara@webalize.com", 
+            "date_added": "2009-09-26 21:28:07", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:39:02", 
+            "object_id": 3, 
+            "content_type": 16, 
+            "address": "matt@webalize.com", 
+            "date_added": "2009-09-26 21:28:45", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:38:53", 
+            "object_id": 4, 
+            "content_type": 16, 
+            "address": "tim@webalize.com", 
+            "date_added": "2009-09-26 21:29:57", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:41:19", 
+            "object_id": 5, 
+            "content_type": 16, 
+            "address": "meh4x@university.edu", 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "addressbook.emailaddress", 
+        "fields": {
+            "date_modified": "2009-09-26 21:38:07", 
+            "object_id": 5, 
+            "content_type": 16, 
+            "address": "meganhaury@email.com", 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.streetaddress", 
+        "fields": {
+            "city": "Charlottesville", 
+            "zip": "22902", 
+            "date_modified": "2009-09-26 21:25:30", 
+            "object_id": 1, 
+            "state": "VA", 
+            "content_type": 15, 
+            "address": "107 South First Street", 
+            "date_added": "2009-09-26 21:24:33", 
+            "type": "main"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.streetaddress", 
+        "fields": {
+            "city": "Charlottesville", 
+            "zip": "12345", 
+            "date_modified": "2009-09-26 21:40:57", 
+            "object_id": 1, 
+            "state": "VA", 
+            "content_type": 16, 
+            "address": "123 Main St.", 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.streetaddress", 
+        "fields": {
+            "city": "Charlottesville", 
+            "zip": "12345", 
+            "date_modified": "2009-09-26 21:40:44", 
+            "object_id": 5, 
+            "state": "VA", 
+            "content_type": 16, 
+            "address": "123 Main St.", 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "number": "434-296-9963 x107", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "number": "434-249-2174", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "mobile"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "number": "434-977-2056", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:29:42", 
+            "number": "434-296-9963 x112", 
+            "object_id": 3, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:28:45", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:32:54", 
+            "number": "434-977-2056", 
+            "object_id": 5, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "home"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "addressbook.phonenumber", 
+        "fields": {
+            "date_modified": "2009-09-26 21:32:54", 
+            "number": "434-960-1600", 
+            "object_id": 5, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "mobile"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.website", 
+        "fields": {
+            "date_modified": "2009-09-26 21:25:30", 
+            "url": "http://www.category4.com/", 
+            "object_id": 1, 
+            "content_type": 15, 
+            "date_added": "2009-09-26 21:24:33", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.website", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "url": "http://www.dawsoning.com/", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "personal"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.website", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "url": "http://www.thenestedfloat.com/", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "personal"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "nestedfloat", 
+            "service": "aim", 
+            "date_modified": "2009-09-26 21:28:04", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "matthewtdawson", 
+            "service": "google-talk", 
+            "date_modified": "2009-09-26 21:28:04", 
+            "object_id": 1, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:24:29", 
+            "type": "personal"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "onejackalope", 
+            "service": "aim", 
+            "date_modified": "2009-09-26 21:28:38", 
+            "object_id": 2, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:28:07", 
+            "type": "personal"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "mattshadel", 
+            "service": "aim", 
+            "date_modified": "2009-09-26 21:29:42", 
+            "object_id": 3, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:28:45", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "timothymcdaniels", 
+            "service": "aim", 
+            "date_modified": "2009-09-26 21:30:33", 
+            "object_id": 4, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:29:57", 
+            "type": "work"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "addressbook.imaccount", 
+        "fields": {
+            "username": "meganhaury", 
+            "service": "aim", 
+            "date_modified": "2009-09-26 21:32:54", 
+            "object_id": 5, 
+            "content_type": 16, 
+            "date_added": "2009-09-26 21:30:42", 
+            "type": "personal"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.note", 
+        "fields": {
+            "date_modified": "2009-09-26 21:25:30", 
+            "object_id": 1, 
+            "content": "Great folks. Great websites.", 
+            "content_type": 15, 
+            "reference_date": "2009-09-26 21:25:22", 
+            "date_added": "2009-09-26 21:24:33"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.note", 
+        "fields": {
+            "date_modified": "2009-09-26 21:28:04", 
+            "object_id": 1, 
+            "content": "Matt makes a spicy meat-ah-ball.", 
+            "content_type": 16, 
+            "reference_date": "2009-09-26 21:27:44", 
+            "date_added": "2009-09-26 21:24:29"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.organization", 
+        "fields": {
+            "date_added": "2009-09-26 21:24:33", 
+            "name": "Webalize", 
+            "date_modified": "2009-09-26 21:40:09"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.organization", 
+        "fields": {
+            "date_added": "2009-09-26 21:30:53", 
+            "name": "University of Virginia", 
+            "date_modified": "2009-09-26 21:31:05"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "addressbook.contact", 
+        "fields": {
+            "first_name": "Matt", 
+            "last_name": "Dawson", 
+            "middle_name": "", 
+            "title": "Web Developer", 
+            "date_modified": "2009-09-26 21:28:04", 
+            "organization": 1, 
+            "date_added": "2009-09-26 21:24:29"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "addressbook.contact", 
+        "fields": {
+            "first_name": "Elizabeth", 
+            "last_name": "Sara", 
+            "middle_name": "", 
+            "title": "Project Manager", 
+            "date_modified": "2009-09-26 21:29:55", 
+            "organization": 1, 
+            "date_added": "2009-09-26 21:28:07"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "addressbook.contact", 
+        "fields": {
+            "first_name": "Matt", 
+            "last_name": "Shadel", 
+            "middle_name": "", 
+            "title": "CEO", 
+            "date_modified": "2009-09-26 21:29:42", 
+            "organization": null, 
+            "date_added": "2009-09-26 21:28:45"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "addressbook.contact", 
+        "fields": {
+            "first_name": "Tim", 
+            "last_name": "McDaniels", 
+            "middle_name": "", 
+            "title": "CTO", 
+            "date_modified": "2009-09-26 21:30:33", 
+            "organization": 1, 
+            "date_added": "2009-09-26 21:29:57"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "addressbook.contact", 
+        "fields": {
+            "first_name": "Megan", 
+            "last_name": "Haury", 
+            "middle_name": "", 
+            "title": "PhD Candidate", 
+            "date_modified": "2009-09-26 21:32:54", 
+            "organization": 2, 
+            "date_added": "2009-09-26 21:30:42"
+        }
+    }
+]
