@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
@@ -16,8 +17,8 @@ class GenericRelationshipMixin(models.Model):
 
 class DateMixin(models.Model):
     """A mixin for adding created and modified dates to a model."""
-    date_added = models.DateTimeField(default=datetime.now)
-    date_modified = models.DateTimeField(null=True, blank=True)
+    date_added = models.DateTimeField(_('date added'), default=datetime.now)
+    date_modified = models.DateTimeField(_('date modified'), null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -30,17 +31,18 @@ class DateMixin(models.Model):
 class EmailAddress(GenericRelationshipMixin, DateMixin):
     """A generically related email address model."""
     TYPE_CHOICES = (
-        ('main', 'Main'),
-        ('home', 'Home'),
-        ('work', 'Work'),
-        ('other', 'Other'),
+        ('main', _('Main')),
+        ('personal', _('Personal')),
+        ('work', _('Work')),
+        ('other', _('Other')),
     )
-    address = models.EmailField(max_length=100, blank=True, null=True)
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
+    address = models.EmailField(_('address'), max_length=100, blank=True, null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
 
     class Meta:
-        verbose_name_plural = 'email addresses'
+        verbose_name = _('email address')
+        verbose_name_plural = _('email addresses')
 
     def __unicode__(self):
         return u'%s' % self.address
@@ -49,10 +51,10 @@ class EmailAddress(GenericRelationshipMixin, DateMixin):
 class StreetAddress(GenericRelationshipMixin, DateMixin):
     """A generically related street address model."""
     TYPE_CHOICES = (
-        ('main', 'Main'),
-        ('home', 'Home'),
-        ('work', 'Work'),
-        ('other', 'Other'),
+        ('main', _('Main')),
+        ('home', _('Home')),
+        ('work', _('Work')),
+        ('other', _('Other')),
     )
     address = models.TextField(blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
@@ -62,7 +64,8 @@ class StreetAddress(GenericRelationshipMixin, DateMixin):
                             null=True)
 
     class Meta:
-        verbose_name_plural = 'street addresses'
+        verbose_name = _('street address')
+        verbose_name_plural = _('street addresses')
 
     def __unicode__(self):
         return u'%s, %s, %s %s' % (self.address, self.city, self.state,
@@ -72,16 +75,20 @@ class StreetAddress(GenericRelationshipMixin, DateMixin):
 class PhoneNumber(GenericRelationshipMixin, DateMixin):
     """A generically related phone number model."""
     TYPE_CHOICES = (
-        ('main', 'Main'),
-        ('home', 'Home'),
-        ('work', 'Work'),
-        ('mobile', 'Mobile'),
-        ('fax', 'Fax'),
-        ('other', 'Other'),
+        ('main', _('Main')),
+        ('home', _('Home')),
+        ('work', _('Work')),
+        ('mobile', _('Mobile')),
+        ('fax', _('Fax')),
+        ('other', _('Other')),
     )
-    number = models.CharField(max_length=20, blank=True, null=True)
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
+    number = models.CharField(_('number'), max_length=20, blank=True, null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
+
+    class Meta:
+        verbose_name = _('phone number')
+        verbose_name_plural = _('phone numbers')
 
     def __unicode__(self):
         return u'%s' % self.number
@@ -90,13 +97,17 @@ class PhoneNumber(GenericRelationshipMixin, DateMixin):
 class Website(GenericRelationshipMixin, DateMixin):
     """A generically related website model."""
     TYPE_CHOICES = (
-        ('work', 'Work'),
-        ('personal', 'Personal'),
-        ('other', 'Other'),
+        ('work', _('Work')),
+        ('personal', _('Personal')),
+        ('other', _('Other')),
     )
-    url = models.URLField(max_length=100, blank=True, null=True)
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
+    url = models.URLField(_('url'), max_length=100, blank=True, null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
+
+    class Meta:
+        verbose_name = _('website')
+        verbose_name_plural = _('websites')
 
     def __unicode__(self):
         return u'%s' % self.url
@@ -105,32 +116,32 @@ class Website(GenericRelationshipMixin, DateMixin):
 class IMAccount(GenericRelationshipMixin, DateMixin):
     """A generically related IM model."""
     SERVICE_CHOICES = (
-        ('aim', 'AIM'),
-        ('msn', 'MSN'),
-        ('icq', 'ICQ'),
-        ('jabber', 'Jabber'),
-        ('yahoo', 'Yahoo'),
-        ('skype', 'Skype'),
-        ('qq', 'QQ'),
-        ('sametime', 'Sametime'),
-        ('gadu-gadu', 'Gadu-Gadu'),
-        ('google-talk', 'Google Talk'),
-        ('other', 'Other')
+        ('aim', _('AIM')),
+        ('msn', _('MSN')),
+        ('icq', _('ICQ')),
+        ('jabber', _('Jabber')),
+        ('yahoo', _('Yahoo')),
+        ('skype', _('Skype')),
+        ('qq', _('QQ')),
+        ('sametime', _('Sametime')),
+        ('gadu-gadu', _('Gadu-Gadu')),
+        ('google-talk', _('Google Talk')),
+        ('other', _('Other'))
     )
     TYPE_CHOICES = (
-        ('work', 'Work'),
-        ('personal', 'Personal'),
-        ('other', 'Other'),
+        ('work', _('Work')),
+        ('personal', _('Personal')),
+        ('other', _('Other')),
     )
-    username = models.CharField(max_length=100)
-    service = models.CharField(max_length=15, choices=SERVICE_CHOICES, blank=True,
+    username = models.CharField(_('username'), max_length=100)
+    service = models.CharField(_('service'), max_length=15, choices=SERVICE_CHOICES, blank=True,
                                null=True)
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
 
     class Meta:
-        verbose_name = 'IM account'
-        verbose_name_plural = 'IM accounts'
+        verbose_name = _('IM account')
+        verbose_name_plural = _('IM accounts')
 
     def __unicode__(self):
         return u'%s: %s' % (self.service, self.username)
@@ -138,8 +149,12 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
 
 class Note(GenericRelationshipMixin, DateMixin):
     """A generic note model."""
-    content = models.TextField()
-    reference_date = models.DateTimeField(null=True, blank=True)
+    content = models.TextField(_('content'))
+    reference_date = models.DateTimeField(_('reference date'), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('note')
+        verbose_name_plural = _('notes')
 
     def __unicode__(self):
         return u'%s' % self.content
@@ -159,7 +174,11 @@ class ClientInfoMixin(models.Model):
 
 
 class Organization(ClientInfoMixin, DateMixin):
-    name = models.CharField(max_length=200)
+    name = models.CharField(_('name'), max_length=200)
+
+    class Meta:
+        verbose_name = _('organization')
+        verbose_name_plural = _('organizations')
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -167,10 +186,14 @@ class Organization(ClientInfoMixin, DateMixin):
 
 class Contact(ClientInfoMixin, DateMixin):
     organization = models.ForeignKey(Organization, blank=True, null=True)
-    title = models.CharField(max_length=100, blank=True)
-    first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    title = models.CharField(_('title'), max_length=100, blank=True)
+    first_name = models.CharField(_('first name'), max_length=50)
+    middle_name = models.CharField(_('middle name'), max_length=50, blank=True, null=True)
+    last_name = models.CharField(_('last name'), max_length=50, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('contact')
+        verbose_name_plural = _('contacts')
 
     def __unicode__(self):
         return u'%s' % self.full_name
