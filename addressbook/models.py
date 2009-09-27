@@ -18,7 +18,8 @@ class GenericRelationshipMixin(models.Model):
 class DateMixin(models.Model):
     """A mixin for adding created and modified dates to a model."""
     date_added = models.DateTimeField(_('date added'), default=datetime.now)
-    date_modified = models.DateTimeField(_('date modified'), null=True, blank=True)
+    date_modified = models.DateTimeField(_('date modified'), null=True, 
+                                         blank=True)
 
     class Meta:
         abstract = True
@@ -36,9 +37,10 @@ class EmailAddress(GenericRelationshipMixin, DateMixin):
         ('work', _('Work')),
         ('other', _('Other')),
     )
-    address = models.EmailField(_('address'), max_length=100, blank=True, null=True)
-    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
-                            null=True)
+    address = models.EmailField(_('address'), max_length=100, blank=True, 
+                                null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
+                            blank=True, null=True)
 
     class Meta:
         verbose_name = _('email address')
@@ -82,9 +84,10 @@ class PhoneNumber(GenericRelationshipMixin, DateMixin):
         ('fax', _('Fax')),
         ('other', _('Other')),
     )
-    number = models.CharField(_('number'), max_length=20, blank=True, null=True)
-    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
-                            null=True)
+    number = models.CharField(_('number'), max_length=20, blank=True, 
+                              null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
+                            blank=True, null=True)
 
     class Meta:
         verbose_name = _('phone number')
@@ -102,8 +105,8 @@ class Website(GenericRelationshipMixin, DateMixin):
         ('other', _('Other')),
     )
     url = models.URLField(_('url'), max_length=100, blank=True, null=True)
-    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
-                            null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
+                            blank=True, null=True)
 
     class Meta:
         verbose_name = _('website')
@@ -134,10 +137,10 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
         ('other', _('Other')),
     )
     username = models.CharField(_('username'), max_length=100)
-    service = models.CharField(_('service'), max_length=15, choices=SERVICE_CHOICES, blank=True,
-                               null=True)
-    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, blank=True,
-                            null=True)
+    service = models.CharField(_('service'), max_length=15, 
+                               choices=SERVICE_CHOICES, blank=True, null=True)
+    type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
+                            blank=True, null=True)
 
     class Meta:
         verbose_name = _('IM account')
@@ -150,7 +153,8 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
 class Note(GenericRelationshipMixin, DateMixin):
     """A generic note model."""
     content = models.TextField(_('content'))
-    reference_date = models.DateTimeField(_('reference date'), null=True, blank=True)
+    reference_date = models.DateTimeField(_('reference date'), null=True, 
+                                          blank=True)
 
     class Meta:
         verbose_name = _('note')
@@ -162,9 +166,11 @@ class Note(GenericRelationshipMixin, DateMixin):
 
 class ClientInfoMixin(models.Model):
     """An abstract base class providing common client information."""
-    street_addresses = generic.GenericRelation(StreetAddress, blank=True, null=True)
+    street_addresses = generic.GenericRelation(StreetAddress, blank=True, 
+                                               null=True)
     phone_numbers = generic.GenericRelation(PhoneNumber, blank=True, null=True)
-    email_addresses = generic.GenericRelation(EmailAddress, blank=True, null=True)
+    email_addresses = generic.GenericRelation(EmailAddress, blank=True, 
+                                              null=True)
     websites = generic.GenericRelation(Website, blank=True, null=True)
     im_accounts = generic.GenericRelation(IMAccount, blank=True, null=True)
     notes = generic.GenericRelation(Note, blank=True, null=True)
@@ -188,8 +194,10 @@ class Contact(ClientInfoMixin, DateMixin):
     organization = models.ForeignKey(Organization, blank=True, null=True)
     title = models.CharField(_('title'), max_length=100, blank=True)
     first_name = models.CharField(_('first name'), max_length=50)
-    middle_name = models.CharField(_('middle name'), max_length=50, blank=True, null=True)
-    last_name = models.CharField(_('last name'), max_length=50, blank=True, null=True)
+    middle_name = models.CharField(_('middle name'), max_length=50, blank=True, 
+                                   null=True)
+    last_name = models.CharField(_('last name'), max_length=50, blank=True, 
+                                 null=True)
 
     class Meta:
         verbose_name = _('contact')
