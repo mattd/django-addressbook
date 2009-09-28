@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -185,9 +186,16 @@ class Organization(ClientInfoMixin, DateMixin):
     class Meta:
         verbose_name = _('organization')
         verbose_name_plural = _('organizations')
+        ordering = ('name',)
     
     def __unicode__(self):
         return u'%s' % self.name
+
+    @permalink
+    def get_absolute_url(self):
+        return ('addressbook_organization_detail', (), {
+            'organization_id': self.id,
+        })
 
 
 class Contact(ClientInfoMixin, DateMixin):
@@ -202,6 +210,7 @@ class Contact(ClientInfoMixin, DateMixin):
     class Meta:
         verbose_name = _('contact')
         verbose_name_plural = _('contacts')
+        ordering = ('last_name', 'first_name',)
 
     def __unicode__(self):
         return u'%s' % self.full_name
@@ -209,4 +218,10 @@ class Contact(ClientInfoMixin, DateMixin):
     @property
     def full_name(self):
         return u'%s %s' % (self.first_name, self.last_name)
+
+    @permalink
+    def get_absolute_url(self):
+        return ('addressbook_contact_detail', (), {
+            'contact_id': self.id,
+        })
         
