@@ -1,7 +1,11 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 
-urlpatterns = patterns('addressbook.views',
+urlpatterns = patterns('',
+    (r'^search/', include('haystack.urls')),
+)
+
+urlpatterns += patterns('addressbook.views',
     url(
         r'^contacts/$', 
         'contact_list', 

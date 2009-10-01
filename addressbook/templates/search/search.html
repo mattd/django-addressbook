@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_id %}search{% endblock %}
+
+{% block content_title %}Search{% endblock %}
+
+{% block content %}
+
+	<form method="get" action=".">
+		<table>
+			{{ form.as_table }}
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<input type="submit" value="Search" />
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	{% if page.object_list %}
+		{% for result in page.object_list %}
+			<div>
+				<p>"{{ result.object.content }}"</p>
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>No results found.</p>
+	{% endif %}
+
+{% endblock %}
+
