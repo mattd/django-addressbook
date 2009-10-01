@@ -15,8 +15,10 @@ Addressbook uses Haystack to enable full text search of all addressbook content.
 
 1. Setup your search backend by following the tutorial at [haystacksearch.org](http://haystacksearch.org/docs/tutorial.html#initial-setup). That should take you to the end of their Step 2.
 2. Put the following code in a file called `search_sites.py` at your project root:
+
 	import haystack
 	haystack.autodiscover()
+
 3. Index your data with `python manage.py reindex --verbosity=2`
 
 Search related templates are included in the Addressbook templates directory. Of course, you can also customize the display and indexing templates to your heart's content. Just follow the instructions at the link above.
