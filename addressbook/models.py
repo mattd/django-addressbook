@@ -105,6 +105,7 @@ class Website(GenericRelationshipMixin, DateMixin):
         ('personal', _('Personal')),
         ('other', _('Other')),
     )
+    name = models.CharField(_('name'), max_length=200, blank=True, null=True)
     url = models.URLField(_('url'), max_length=100, blank=True, null=True)
     type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
                             blank=True, null=True)
