@@ -1,8 +1,6 @@
 ##django-addressbook 
 ###A contact management application written for the Django web framework.
 
-<div class="wikistyle>
-
 Addressbook is intended to be a fully pluggable Django application. By this we mean that everything you need to get going - including template files and static media - will be included. Customize as much as you want, but the idea here is to get you up and running as fast as possible.
 
 NOTE: This software is in a pre-alpha state. If you make use out of pieces of this application, by all means, have at it. Be warned, however, that this version will be going through some substantive changes fairly quickly, so if you need the code for a production environment, consider forking.
@@ -22,5 +20,3 @@ Addressbook uses Haystack to enable full text search of all addressbook content.
 3) Index your data with `python manage.py reindex --verbosity=2`
 
 Search related templates are included in the Addressbook templates directory. Of course, you can also customize the display and indexing templates to your heart's content. Just follow the instructions at the link above.
-
-</div><!--/.wikistyle-->
