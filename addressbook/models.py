@@ -149,7 +149,7 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
         verbose_name_plural = _('IM accounts')
 
     def __unicode__(self):
-        return u'%s: %s' % (self.service, self.username)
+        return u'%s (%s)' % (self.username, self.get_service_display())
 
 
 class Note(GenericRelationshipMixin, DateMixin):

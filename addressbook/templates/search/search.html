@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load render_template_for %}
 
 {% block title %}Search{% endblock %}
 
@@ -23,7 +24,7 @@
 	{% if page.object_list %}
 		{% for result in page.object_list %}
 			<div>
-				<p>"{{ result.object.content }}"</p>
+				{% render_template_for result.object in "addressbook/includes" %}
 			</div>
 		{% endfor %}
 	{% else %}
