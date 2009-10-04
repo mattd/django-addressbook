@@ -3,22 +3,24 @@ from django.template import RequestContext
 from django.views.generic.list_detail import object_list, object_detail
 from django.contrib.auth.decorators import login_required
 
-from addressbook.models import Contact, Organization
+from addressbook.models import Person, Organization
 
 @login_required
-def contact_list(request):
-    return object_list(request, queryset=Contact.objects.all())
-
-
-@login_required
-def contact_detail(request, contact_id):
-    return object_detail(request, queryset=Contact.objects.all(),
-                         object_id=contact_id)
+def people(request):
+    return object_list(request, template_name="addressbook/people.html",
+                       queryset=Person.objects.all())
 
 
 @login_required
-def organization_list(request):
-    return object_list(request, queryset=Organization.objects.all())
+def person_detail(request, person_id):
+    return object_detail(request, queryset=Person.objects.all(),
+                         object_id=person_id)
+
+
+@login_required
+def organizations(request):
+    return object_list(request, template_name="addressbook/organizations.html",
+                       queryset=Organization.objects.all())
 
 
 @login_required

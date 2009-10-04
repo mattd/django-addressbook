@@ -370,7 +370,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "addressbook.contact", 
+        "model": "addressbook.person", 
         "fields": {
             "first_name": "Matt", 
             "last_name": "Dawson", 
@@ -383,7 +383,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "addressbook.contact", 
+        "model": "addressbook.person", 
         "fields": {
             "first_name": "Elizabeth", 
             "last_name": "Sara", 
@@ -396,7 +396,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "addressbook.contact", 
+        "model": "addressbook.person", 
         "fields": {
             "first_name": "Matt", 
             "last_name": "Shadel", 
@@ -409,7 +409,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "addressbook.contact", 
+        "model": "addressbook.person", 
         "fields": {
             "first_name": "Tim", 
             "last_name": "McDaniels", 
@@ -422,7 +422,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "addressbook.contact", 
+        "model": "addressbook.person", 
         "fields": {
             "first_name": "Megan", 
             "last_name": "Haury", 

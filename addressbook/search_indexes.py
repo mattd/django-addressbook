@@ -1,8 +1,8 @@
 from haystack import site 
-from addressbook.models import Contact, EmailAddress, IMAccount, Note, \
+from addressbook.models import Person, EmailAddress, IMAccount, Note, \
     Organization, PhoneNumber, StreetAddress, Website
 
-site.register(Contact)
+site.register(Person)
 site.register(EmailAddress)
 site.register(IMAccount)
 site.register(Note)

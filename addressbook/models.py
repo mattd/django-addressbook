@@ -166,8 +166,8 @@ class Note(GenericRelationshipMixin, DateMixin):
         return u'%s' % self.content
 
 
-class ClientInfoMixin(models.Model):
-    """An abstract base class providing common client information."""
+class ContactInfoMixin(models.Model):
+    """An abstract base class providing common contact information."""
     street_addresses = generic.GenericRelation(StreetAddress, blank=True, 
                                                null=True)
     phone_numbers = generic.GenericRelation(PhoneNumber, blank=True, null=True)
@@ -181,7 +181,12 @@ class ClientInfoMixin(models.Model):
         abstract = True
 
 
-class Organization(ClientInfoMixin, DateMixin):
+class Organization(ContactInfoMixin, DateMixin):
+    """Organization Model
+
+    Organizations are institutions to which contacts may be associated. 
+
+    """
     name = models.CharField(_('name'), max_length=200)
 
     class Meta:
@@ -199,7 +204,12 @@ class Organization(ClientInfoMixin, DateMixin):
         })
 
 
-class Contact(ClientInfoMixin, DateMixin):
+class Person(ContactInfoMixin, DateMixin):
+    """Person Model
+
+    A person is an individual that may be associated with an Organization.
+
+    """
     organization = models.ForeignKey(Organization, blank=True, null=True)
     title = models.CharField(_('title'), max_length=100, blank=True)
     first_name = models.CharField(_('first name'), max_length=50)
@@ -209,8 +219,8 @@ class Contact(ClientInfoMixin, DateMixin):
                                  null=True)
 
     class Meta:
-        verbose_name = _('contact')
-        verbose_name_plural = _('contacts')
+        verbose_name = _('person')
+        verbose_name_plural = _('people')
         ordering = ('last_name', 'first_name',)
 
     def __unicode__(self):
@@ -222,7 +232,7 @@ class Contact(ClientInfoMixin, DateMixin):
 
     @permalink
     def get_absolute_url(self):
-        return ('addressbook_contact_detail', (), {
-            'contact_id': self.id,
+        return ('addressbook_person_detail', (), {
+            'person_id': self.id,
         })
         

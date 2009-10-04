@@ -7,19 +7,19 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('addressbook.views',
     url(
-        r'^contacts/$', 
-        'contact_list', 
-        name="addressbook_contact_list"
+        r'^people/$', 
+        'people', 
+        name="addressbook_people"
     ),
     url(
-        r'^contacts/(?P<contact_id>\d+)/$',
-        'contact_detail',
-        name="addressbook_contact_detail"
+        r'^people/(?P<person_id>\d+)/$',
+        'person_detail',
+        name="addressbook_person_detail"
     ),
     url(
         r'^organizations/$', 
-        'organization_list',
-        name="addressbook_organization_list"
+        'organizations',
+        name="addressbook_organizations"
     ),
     url(
         r'^organizations/(?P<organization_id>\d+)/$',

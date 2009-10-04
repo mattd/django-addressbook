@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 
-from addressbook.models import Contact, Organization, EmailAddress, \
+from addressbook.models import Person, Organization, EmailAddress, \
     StreetAddress, PhoneNumber, Website, IMAccount, Note
 
 class StreetAddressInline(generic.GenericTabularInline):
@@ -32,7 +32,7 @@ class OrganizationAdmin(admin.ModelAdmin):
         NoteInline,
     ]
 
-class ContactAdmin(admin.ModelAdmin):
+class PersonAdmin(admin.ModelAdmin):
     inlines = [
         StreetAddressInline,
         EmailAddressInline,
@@ -42,7 +42,7 @@ class ContactAdmin(admin.ModelAdmin):
         NoteInline,
     ]
 
-admin.site.register(Contact, ContactAdmin)
+admin.site.register(Person, PersonAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(StreetAddress)
 admin.site.register(EmailAddress)
