@@ -207,7 +207,9 @@ class Organization(ContactInfoMixin, DateMixin):
 class Person(ContactInfoMixin, DateMixin):
     """Person Model
 
-    A person is an individual that may be associated with an Organization.
+    A person is an individual that may be associated with an Organization. Note
+    that the name field is blank on each record. It exists solely to provide a
+    consistent way of sorting Person and Organization results via haystack.
 
     """
     organization = models.ForeignKey(Organization, blank=True, null=True)
@@ -217,6 +219,7 @@ class Person(ContactInfoMixin, DateMixin):
                                    null=True)
     last_name = models.CharField(_('last name'), max_length=50, blank=True, 
                                  null=True)
+    name = models.CharField(_('name'), max_length=200, blank=True, null=True)
 
     class Meta:
         verbose_name = _('person')

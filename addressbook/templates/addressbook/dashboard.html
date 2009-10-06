@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load render_template_for %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+	<form method="get" action=".">
+		<table>
+			{{ form.as_table }}
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<input type="submit" value="Search" />
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	{% if page.object_list %}
+		{% for result in page.object_list %}
+			<div>
+				{% render_template_for result.object in "addressbook/includes" %}
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>No results found.</p>
+	{% endif %}
+
+{% endblock %}
+
