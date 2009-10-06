@@ -1,0 +1,1 @@
+<p>Note for {{ object.content_object }}: {{ object }}</p>

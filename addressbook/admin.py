@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 
 from addressbook.models import Person, Organization, EmailAddress, \
-    StreetAddress, PhoneNumber, Website, IMAccount, Note
+    StreetAddress, PhoneNumber, Website, IMAccount, Note, Party
 
 class StreetAddressInline(generic.GenericTabularInline):
     model = StreetAddress 
@@ -50,3 +50,4 @@ admin.site.register(PhoneNumber)
 admin.site.register(Website)
 admin.site.register(IMAccount)
 admin.site.register(Note)
+admin.site.register(Party)

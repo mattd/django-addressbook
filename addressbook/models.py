@@ -26,7 +26,9 @@ class DateMixin(models.Model):
         abstract = True
 
     def save(self):
-        self.date_modified = datetime.now()
+        if self.id:
+            self.date_added = self.date_added
+            self.date_modified = datetime.now()
         super(DateMixin, self).save()
 
 
@@ -166,8 +168,15 @@ class Note(GenericRelationshipMixin, DateMixin):
         return u'%s' % self.content
 
 
-class ContactInfoMixin(models.Model):
-    """An abstract base class providing common contact information."""
+class Party(models.Model):
+    """Party Model
+
+    The Party model is inherited by Organization and Person models. In addition
+    to providing contact fields common to each, this model provides an
+    interface for including items from both child models in a single QuerySet or
+    SearchQuerySet.
+
+    """
     street_addresses = generic.GenericRelation(StreetAddress, blank=True, 
                                                null=True)
     phone_numbers = generic.GenericRelation(PhoneNumber, blank=True, null=True)
@@ -178,10 +187,14 @@ class ContactInfoMixin(models.Model):
     notes = generic.GenericRelation(Note, blank=True, null=True)
 
     class Meta:
-        abstract = True
+        verbose_name = _('party')
+        verbose_name_plural = _('parties')
+    
+    def __unicode__(self):
+        return u'%s' % self.id
 
 
-class Organization(ContactInfoMixin, DateMixin):
+class Organization(Party, DateMixin):
     """Organization Model
 
     Organizations are institutions to which contacts may be associated. 
@@ -204,12 +217,10 @@ class Organization(ContactInfoMixin, DateMixin):
         })
 
 
-class Person(ContactInfoMixin, DateMixin):
+class Person(Party, DateMixin):
     """Person Model
 
-    A person is an individual that may be associated with an Organization. Note
-    that the name field is blank on each record. It exists solely to provide a
-    consistent way of sorting Person and Organization results via haystack.
+    A person is an individual that may be associated with an Organization. 
 
     """
     organization = models.ForeignKey(Organization, blank=True, null=True)
@@ -219,7 +230,6 @@ class Person(ContactInfoMixin, DateMixin):
                                    null=True)
     last_name = models.CharField(_('last name'), max_length=50, blank=True, 
                                  null=True)
-    name = models.CharField(_('name'), max_length=200, blank=True, null=True)
 
     class Meta:
         verbose_name = _('person')

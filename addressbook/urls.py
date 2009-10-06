@@ -7,7 +7,7 @@ from haystack.views import SearchView
 
 from addressbook.models import Person, Organization
 
-dashboard_sqs = SearchQuerySet().models(Person, Organization).order_by('name',)
+dashboard_sqs = SearchQuerySet().models(Person, Organization).order_by('sort_name',)
 
 urlpatterns = patterns('haystack.views',
     url(
