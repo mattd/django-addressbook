@@ -4,6 +4,7 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.contrib.auth.decorators import login_required
 
 from haystack.views import SearchView
+from haystack.forms import SearchForm 
 from haystack.query import SearchQuerySet
 
 from addressbook.models import Party, Person, Organization
@@ -24,6 +25,14 @@ class DashboardSearchView(SearchView):
 
         return SearchQuerySet().models(Person, Organization).order_by('sort_name').load_all()
         
+
+@login_required
+def dashboard(request):
+    sqs = SearchQuerySet().models(Person, Organization).order_by('sort_name')
+    return DashboardSearchView(template="addressbook/dashboard.html", 
+                               searchqueryset=sqs,
+                               form_class=SearchForm).__call__(request)
+
 
 @login_required
 def people(request):

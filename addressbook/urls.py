@@ -1,22 +1,10 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 
-from haystack.forms import SearchForm
-from haystack.query import SearchQuerySet
-
-from addressbook.models import Person, Organization
-from addressbook.views import DashboardSearchView
-
-dashboard_sqs = SearchQuerySet().models(Person, Organization).order_by('sort_name',)
-
 urlpatterns = patterns('addressbook.views',
     url(
         r'^$',
-        DashboardSearchView(
-            template="addressbook/dashboard.html",
-            searchqueryset=dashboard_sqs,
-            form_class=SearchForm
-        ),
+        'dashboard',
         name="addressbook_dashboard"
     ),
     url(
