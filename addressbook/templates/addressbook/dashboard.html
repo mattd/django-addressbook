@@ -24,7 +24,7 @@
 	{% if page.object_list %}
 		{% for result in page.object_list %}
 			<div>
-				{% render_template_for result.object in "addressbook/includes" %}
+				{{ result.rendered|safe }}	
 			</div>
 		{% endfor %}
 	{% else %}
