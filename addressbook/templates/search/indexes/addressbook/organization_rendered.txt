@@ -1,1 +1,1 @@
-<p>Organization: {{ object }}</p>
+<p>Organization: <a href="{{ object.get_absolute_url }}">{{ object }}</a></p>

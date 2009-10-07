@@ -9,7 +9,7 @@ from addressbook.views import DashboardSearchView
 
 dashboard_sqs = SearchQuerySet().models(Person, Organization).order_by('sort_name',)
 
-urlpatterns = patterns('',
+urlpatterns = patterns('addressbook.views',
     url(
         r'^$',
         DashboardSearchView(
@@ -19,13 +19,6 @@ urlpatterns = patterns('',
         ),
         name="addressbook_dashboard"
     ),
-)
-
-urlpatterns += patterns('',
-    (r'^search/', include('haystack.urls')),
-)
-
-urlpatterns += patterns('addressbook.views',
     url(
         r'^people/$', 
         'people', 
