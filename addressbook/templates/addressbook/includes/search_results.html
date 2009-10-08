@@ -1,0 +1,11 @@
+<div id="results">
+	{% if object_list %}
+		{% for result in object_list %}
+			<div>
+				{{ result.rendered|safe }}
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>No results found.</p>
+	{% endif %}
+</div><!--/#results-->

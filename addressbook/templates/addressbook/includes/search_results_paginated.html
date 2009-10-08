@@ -1,0 +1,14 @@
+<div id="results">
+	{% if page.object_list %}
+		{% for result in page.object_list %}
+			<div>
+				{{ result.rendered|safe }}
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>No results found.</p>
+	{% endif %}
+
+{% include "addressbook/includes/pagination.html" %}
+
+</div><!--/#results-->

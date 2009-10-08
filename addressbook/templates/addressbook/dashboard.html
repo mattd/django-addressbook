@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load render_template_for %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -9,27 +8,15 @@
 
 {% block content %}
 
-	<form method="get" action=".">
-		<table>
-			{{ form.as_table }}
-			<tr>
-				<td>&nbsp;</td>
-				<td>
-					<input type="submit" value="Search" />
-				</td>
-			</tr>
-		</table>
+	<form id="live-filter" method="get" autocomplete="off" action=".">
+		{{ form.as_p }}
+		<input type="submit" class="submit" value="Search" />
 	</form>
 
-	{% if page.object_list %}
-		{% for result in page.object_list %}
-			<div>
-				{{ result.rendered|safe }}	
-			</div>
-		{% endfor %}
-	{% else %}
-		<p>No results found.</p>
-	{% endif %}
+	{% include "addressbook/includes/search_results_paginated.html" %}
 
 {% endblock %}
 
+{% block extra_body %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}addressbook/js/live-filter.js"></script>
+{% endblock %}

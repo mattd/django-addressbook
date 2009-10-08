@@ -173,8 +173,7 @@ class Party(models.Model):
 
     The Party model is inherited by Organization and Person models. In addition
     to providing contact fields common to each, this model provides an
-    interface for including items from both child models in a single QuerySet or
-    SearchQuerySet.
+    interface for including items from both child models in a single QuerySet.
 
     """
     street_addresses = generic.GenericRelation(StreetAddress, blank=True, 
