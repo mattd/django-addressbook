@@ -55,63 +55,41 @@ def party_list(request, searchqueryset, template):
 
 @login_required
 def party_add(request, form, template):
-    # Setup formsets for all our generically related data.
-    EmailAddressGenericFormset = generic_inlineformset_factory(EmailAddress,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    StreetAddressGenericFormset = generic_inlineformset_factory(StreetAddress,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    PhoneNumberGenericFormset = generic_inlineformset_factory(PhoneNumber,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    WebsiteGenericFormset = generic_inlineformset_factory(Website,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    IMAccountGenericFormset = generic_inlineformset_factory(IMAccount,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    NoteGenericFormset = generic_inlineformset_factory(Note,
-                              extra=1, exclude=('date_added', 'date_modified'))
+    # Setup formset classes for all our generically related data.
+    email_formset = generic_inlineformset_factory(EmailAddress,
+                    extra=1, exclude=('date_added', 'date_modified'))
+    street_formset = generic_inlineformset_factory(StreetAddress,
+                     extra=1, exclude=('date_added', 'date_modified'))
+    phone_formset = generic_inlineformset_factory(PhoneNumber,
+                    extra=1, exclude=('date_added', 'date_modified'))
+    website_formset = generic_inlineformset_factory(Website,
+                      extra=1, exclude=('date_added', 'date_modified'))
+    im_formset = generic_inlineformset_factory(IMAccount,
+                 extra=1, exclude=('date_added', 'date_modified'))
+    note_formset = generic_inlineformset_factory(Note,
+                   extra=1, exclude=('date_added', 'date_modified'))
+    formset_classes = [email_formset, street_formset, phone_formset, website_formset, 
+                       im_formset, note_formset]
 
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
             object = form.save()
-            email_formset = EmailAddressGenericFormset(request.POST, 
-                                                       instance=object)
-            street_formset = StreetAddressGenericFormset(request.POST,
-                                                       instance=object)
-            phone_formset = PhoneNumberGenericFormset(request.POST,
-                                                       instance=object)
-            website_formset = WebsiteGenericFormset(request.POST,
-                                                       instance=object)
-            im_formset = IMAccountGenericFormset(request.POST,
-                                                       instance=object)
-            note_formset = NoteGenericFormset(request.POST,
-                                                       instance=object)
-
-            if email_formset.is_valid():
-                email_formset.save()
-            if street_formset.is_valid():
-                street_formset.save()
-            if phone_formset.is_valid():
-                phone_formset.save()
-            if website_formset.is_valid():
-                website_formset.save()
-            if im_formset.is_valid():
-                im_formset.save()
-            if note_formset.is_valid():
-                note_formset.save()
-
-        if form.is_valid() and email_formset.is_valid() \
-            and street_formset.is_valid() and phone_formset.is_valid() \
-            and website_formset.is_valid() and im_formset.is_valid() \
-            and im_formset.is_valid() and note_formset.is_valid():
-            return HttpResponseRedirect(object.get_absolute_url())
+            formsets = [formset_class(request.POST, instance=object)
+                        for formset_class in formset_classes]
+            for formset in formsets:
+                if formset.is_valid():
+                    formset.save()
+            if all([formset.is_valid() for formset in formsets]):
+                return HttpResponseRedirect(object.get_absolute_url())
     else:
         form = form()
-        email_formset = EmailAddressGenericFormset() 
-        street_formset = StreetAddressGenericFormset() 
-        phone_formset = PhoneNumberGenericFormset() 
-        website_formset = WebsiteGenericFormset() 
-        im_formset = IMAccountGenericFormset()
-        note_formset = NoteGenericFormset()
+        email_formset = email_formset() 
+        street_formset = street_formset() 
+        phone_formset = phone_formset() 
+        website_formset = website_formset() 
+        im_formset = im_formset()
+        note_formset = note_formset()
     context = {
         'form': form,
         'email_formset': email_formset,
