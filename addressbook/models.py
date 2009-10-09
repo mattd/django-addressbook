@@ -240,7 +240,7 @@ class Person(Party, DateMixin):
         ordering = ('last_name', 'first_name',)
 
     def __unicode__(self):
-        return u'%s' % self.full_name
+        return u'%s' % self.display_name
         
     @property
     def display_name(self):
