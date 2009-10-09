@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ block.super }} | Dashboard{% endblock %}
 
 {% block body_id %}dashboard{% endblock %}
 
@@ -8,10 +8,7 @@
 
 {% block content %}
 
-	<form id="live-filter" method="get" autocomplete="off" action=".">
-		{{ form.as_p }}
-		<input type="submit" class="submit" value="Search" />
-	</form>
+	{% include "addressbook/includes/live_filter.html" %}
 
 	{% include "addressbook/includes/search_results_paginated.html" %}
 

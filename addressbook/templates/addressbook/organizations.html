@@ -1,13 +1,19 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Organizations{% endblock %}
+
+{% block body_id %}organizations{% endblock %}
 
 {% block content_title %}Organizations{% endblock %}
 
 {% block content %}
 
-		<ul>
-			{% for organization in object_list %}
-				<li><a href="{{ organization.get_absolute_url }}">{{ organization.name }}</a></li>
-			{% endfor %}
-		</ul>
+	{% include "addressbook/includes/live_filter.html" %}
 
+	{% include "addressbook/includes/search_results_paginated.html" %}
+
+{% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}addressbook/js/live-filter.js"></script>
 {% endblock %}

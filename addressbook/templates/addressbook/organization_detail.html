@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
-{% block content_title %}Organizations{% endblock %}
+{% block title %}{{ block.super }} | Organization | {{ object.display_name }}{% endblock %}
+
+{% block content_title %}Organization{% endblock %}
 
 {% block content %}
 
-	<h2>{{ object.name }}</h2>
+	<h2>{{ object.display_name }}</h2>
 
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Organization | Add{% endblock %}
+
+{% block body_id %}organization{% endblock %}
+
+{% block content_title %}Add Organization{% endblock %}
+
+{% block content %}
+
+	{% include "addressbook/includes/party_add_form.html" %}
+
+{% endblock %}

@@ -2,6 +2,10 @@ jQuery(document).ready(function() {
 
 	jQuery('#live-filter .submit').hide()
 
+	jQuery('#live-filter').submit(function() {
+		return false;
+	});
+
 	jQuery('#live-filter').keyup(function() {
 		filterList();
 		return false;
