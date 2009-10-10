@@ -56,27 +56,35 @@ def party_list(request, searchqueryset, template):
 @login_required
 def party_add(request, form, template):
     # Setup formset classes for all our generically related data.
-    email_formset = generic_inlineformset_factory(EmailAddress,
-                    extra=1, exclude=('date_added', 'date_modified'))
-    street_formset = generic_inlineformset_factory(StreetAddress,
-                     extra=1, exclude=('date_added', 'date_modified'))
-    phone_formset = generic_inlineformset_factory(PhoneNumber,
-                    extra=1, exclude=('date_added', 'date_modified'))
-    website_formset = generic_inlineformset_factory(Website,
-                      extra=1, exclude=('date_added', 'date_modified'))
-    im_formset = generic_inlineformset_factory(IMAccount,
-                 extra=1, exclude=('date_added', 'date_modified'))
-    note_formset = generic_inlineformset_factory(Note,
-                   extra=1, exclude=('date_added', 'date_modified'))
-    formset_classes = [email_formset, street_formset, phone_formset, website_formset, 
-                       im_formset, note_formset]
+    EmailAddressGenericFormSet = generic_inlineformset_factory(EmailAddress,
+                                 extra=1, exclude=('date_added', 'date_modified'))
+    StreetAddressGenericFormSet = generic_inlineformset_factory(StreetAddress,
+                                  extra=1, exclude=('date_added', 'date_modified'))
+    PhoneNumberGenericFormSet = generic_inlineformset_factory(PhoneNumber,
+                                extra=1, exclude=('date_added', 'date_modified'))
+    WebsiteGenericFormSet = generic_inlineformset_factory(Website,
+                            extra=1, exclude=('date_added', 'date_modified'))
+    IMAccountGenericFormSet = generic_inlineformset_factory(IMAccount,
+                              extra=1, exclude=('date_added', 'date_modified'))
+    NoteGenericFormSet = generic_inlineformset_factory(Note,
+                         extra=1, exclude=('date_added', 'date_modified'))
 
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
             object = form.save()
-            formsets = [formset_class(request.POST, instance=object)
-                        for formset_class in formset_classes]
+            # Bind the formsets to POST data and associate them with our
+            # new object.
+            email_formset = EmailAddressGenericFormSet(request.POST, instance=object)
+            street_formset = StreetAddressGenericFormSet(request.POST, instance=object) 
+            phone_formset = PhoneNumberGenericFormSet(request.POST, instance=object) 
+            website_formset = WebsiteGenericFormSet(request.POST, instance=object)
+            im_formset = IMAccountGenericFormSet(request.POST, instance=object)
+            note_formset = NoteGenericFormSet(request.POST, instance=object)
+            formsets = [email_formset, street_formset, phone_formset,
+                        website_formset, im_formset, note_formset]
+            # Save and validate the formsets. Make sure they all validated
+            # before redirecting.
             for formset in formsets:
                 if formset.is_valid():
                     formset.save()
@@ -84,12 +92,12 @@ def party_add(request, form, template):
                 return HttpResponseRedirect(object.get_absolute_url())
     else:
         form = form()
-        email_formset = email_formset() 
-        street_formset = street_formset() 
-        phone_formset = phone_formset() 
-        website_formset = website_formset() 
-        im_formset = im_formset()
-        note_formset = note_formset()
+        email_formset = EmailAddressGenericFormSet() 
+        street_formset = StreetAddressGenericFormSet() 
+        phone_formset = PhoneNumberGenericFormSet() 
+        website_formset = WebsiteGenericFormSet() 
+        im_formset = IMAccountGenericFormSet()
+        note_formset = NoteGenericFormSet()
     context = {
         'form': form,
         'email_formset': email_formset,
