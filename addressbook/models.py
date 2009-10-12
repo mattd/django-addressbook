@@ -216,7 +216,7 @@ class Organization(Party, DateMixin):
     @permalink
     def get_absolute_url(self):
         return ('addressbook_organization_detail', (), {
-            'organization_id': self.id,
+            'object_id': self.id,
         })
 
 
@@ -249,6 +249,6 @@ class Person(Party, DateMixin):
     @permalink
     def get_absolute_url(self):
         return ('addressbook_person_detail', (), {
-            'person_id': self.id,
+            'object_id': self.id,
         })
         

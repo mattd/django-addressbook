@@ -6,6 +6,9 @@
 
 {% block content %}
 
-	<h2>{{ object.display_name }}</h2>
+	<h2>{{ object.display_name }}</h2> 
+	(<a href="{% url addressbook_organization_edit object.id %}">Edit</a>)
+
+	{% include "addressbook/includes/party_contact_info_display.html" %}
 
 {% endblock %}

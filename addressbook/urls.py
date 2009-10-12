@@ -16,6 +16,8 @@ urlpatterns = patterns('addressbook.views',
         },
         name="addressbook_dashboard"
     ),
+
+    # People URLs
     url(
         r'^people/$', 
         'party_list',
@@ -26,6 +28,32 @@ urlpatterns = patterns('addressbook.views',
         name="addressbook_people"
     ),
     url(
+        r'^people/add/$',
+        'add_party',
+        {
+            'form': PersonForm,
+            'template': 'addressbook/person_add.html',
+        },
+        name="addressbook_person_add"
+    ),
+    url(
+        r'^people/(?P<object_id>\d+)/$',
+        'person_detail',
+        name="addressbook_person_detail"
+    ),
+    url(
+        r'^people/(?P<object_id>\d+)/edit/$',
+        'edit_party',
+        {
+            'model': Person,
+            'form': PersonForm,
+            'template': 'addressbook/person_edit.html',
+        },
+        name="addressbook_person_edit"
+    ),
+
+    # Organization URLs
+    url(
         r'^organizations/$', 
         'party_list', 
         {
@@ -35,31 +63,27 @@ urlpatterns = patterns('addressbook.views',
         name="addressbook_organizations"
     ),
     url(
-        r'^people/(?P<person_id>\d+)/$',
-        'person_detail',
-        name="addressbook_person_detail"
-    ),
-    url(
-        r'^people/add/$',
-        'party_add',
-        {
-            'form': PersonForm,
-            'template': 'addressbook/person_add.html',
-        },
-        name="addressbook_person_add"
-    ),
-    url(
-        r'^organizations/(?P<organization_id>\d+)/$',
-        'organization_detail',
-        name="addressbook_organization_detail"
-    ),
-    url(
         r'^organizations/add/$',
-        'party_add',
+        'add_party',
         {
             'form': OrganizationForm,
             'template': 'addressbook/organization_add.html',
         },
         name="addressbook_organization_add"
+    ),
+    url(
+        r'^organizations/(?P<object_id>\d+)/$',
+        'organization_detail',
+        name="addressbook_organization_detail"
+    ),
+    url(
+        r'^organizations/(?P<object_id>\d+)/edit/$',
+        'edit_party',
+        {
+            'model': Organization,
+            'form': OrganizationForm,
+            'template': 'addressbook/organization_edit.html',
+        },
+        name="addressbook_organization_edit"
     ),
 )

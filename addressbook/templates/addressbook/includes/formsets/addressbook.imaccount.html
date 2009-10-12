@@ -1,0 +1,5 @@
+<h2>IM Accounts</h2>
+{{ formset.management_form }}
+{% for form in formset.forms %}
+	{{ form.as_p }}
+{% endfor %}

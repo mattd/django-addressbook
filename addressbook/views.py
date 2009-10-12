@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic.list_detail import object_detail
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
@@ -35,6 +35,9 @@ def party_list(request, searchqueryset, template):
             context_instance = RequestContext(request)
         )
 
+    # SearchQuerySet is instantiated in urls.py, thus only loaded once per
+    # server process. Get a fresh instance.
+    searchqueryset = searchqueryset.all()
     # Paginate the results. Note we don't send pagination on ajax requests.
     paginator = Paginator(searchqueryset, 20)
     try:
@@ -53,59 +56,50 @@ def party_list(request, searchqueryset, template):
     )
 
 
-@login_required
-def party_add(request, form, template):
-    # Setup formset classes for all our generically related data.
-    EmailAddressGenericFormSet = generic_inlineformset_factory(EmailAddress,
-                                 extra=1, exclude=('date_added', 'date_modified'))
-    StreetAddressGenericFormSet = generic_inlineformset_factory(StreetAddress,
-                                  extra=1, exclude=('date_added', 'date_modified'))
-    PhoneNumberGenericFormSet = generic_inlineformset_factory(PhoneNumber,
-                                extra=1, exclude=('date_added', 'date_modified'))
-    WebsiteGenericFormSet = generic_inlineformset_factory(Website,
-                            extra=1, exclude=('date_added', 'date_modified'))
-    IMAccountGenericFormSet = generic_inlineformset_factory(IMAccount,
-                              extra=1, exclude=('date_added', 'date_modified'))
-    NoteGenericFormSet = generic_inlineformset_factory(Note,
-                         extra=1, exclude=('date_added', 'date_modified'))
+def _create_generic_inlineformset_classes():
+    """Generate generic formset classes for all generically related models."""
+    generic_models = [EmailAddress, StreetAddress, PhoneNumber, Website, 
+                      IMAccount, Note]
+    formset_classes = []
+    for generic_model in generic_models:
+        formset_classes.append(generic_inlineformset_factory(
+                               generic_model, extra=1, 
+                               exclude=('date_added', 'date_modified')))
 
+    return formset_classes
+
+
+@login_required
+def add_party(request, form, template):
+    """Add a party child instance - either a Person or an Organization.
+
+    Context includes a form for the object itself and a list of formsets for all
+    generically related content types.
+
+    """
+    formset_classes = _create_generic_inlineformset_classes()
+    formsets = []
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
             object = form.save()
-            # Bind the formsets to POST data and associate them with our
-            # new object.
-            email_formset = EmailAddressGenericFormSet(request.POST, instance=object)
-            street_formset = StreetAddressGenericFormSet(request.POST, instance=object) 
-            phone_formset = PhoneNumberGenericFormSet(request.POST, instance=object) 
-            website_formset = WebsiteGenericFormSet(request.POST, instance=object)
-            im_formset = IMAccountGenericFormSet(request.POST, instance=object)
-            note_formset = NoteGenericFormSet(request.POST, instance=object)
-            formsets = [email_formset, street_formset, phone_formset,
-                        website_formset, im_formset, note_formset]
-            # Save and validate the formsets. Make sure they all validated
-            # before redirecting.
+            # Bind the request data and connect each formset to our object,
+            # then save each if valid.
+            for formset_class in formset_classes:
+                formsets.append(formset_class(request.POST, instance=object))
             for formset in formsets:
                 if formset.is_valid():
                     formset.save()
+            # Make sure all formsets passed validation before redirecting.
             if all([formset.is_valid() for formset in formsets]):
                 return HttpResponseRedirect(object.get_absolute_url())
     else:
         form = form()
-        email_formset = EmailAddressGenericFormSet() 
-        street_formset = StreetAddressGenericFormSet() 
-        phone_formset = PhoneNumberGenericFormSet() 
-        website_formset = WebsiteGenericFormSet() 
-        im_formset = IMAccountGenericFormSet()
-        note_formset = NoteGenericFormSet()
+        for formset_class in formset_classes:
+            formsets.append(formset_class())
     context = {
         'form': form,
-        'email_formset': email_formset,
-        'street_formset': street_formset,
-        'phone_formset': phone_formset,
-        'website_formset': website_formset,
-        'im_formset': im_formset,
-        'note_formset': note_formset,
+        'formsets': formsets,
     }
     return render_to_response(
         template,
@@ -115,12 +109,53 @@ def party_add(request, form, template):
 
 
 @login_required
-def person_detail(request, person_id):
-    return object_detail(request, queryset=Person.objects.all(),
-                         object_id=person_id)
+def edit_party(request, form, template, model, object_id):
+    """Edit a party child instance - either a Person or an Organization.
+
+    Context includes a form for the object itself and a list of formsets for all
+    generically related content types.
+
+    """
+    formset_classes = _create_generic_inlineformset_classes()
+    formsets = []
+    if request.method == 'POST':
+        object = get_object_or_404(model, pk=object_id)
+        form = form(request.POST, instance=object)
+        if form.is_valid():
+            object = form.save()
+            # Bind the request data and connect each formset to our object,
+            # then save each if valid.
+            for formset_class in formset_classes:
+                formsets.append(formset_class(request.POST, instance=object))
+            for formset in formsets:
+                if formset.is_valid():
+                    formset.save()
+            # Make sure all formsets passed validation before redirecting.
+            if all([formset.is_valid() for formset in formsets]):
+                return HttpResponseRedirect(object.get_absolute_url())
+    else:
+        object = get_object_or_404(model, pk=object_id)
+        form = form(instance=object)
+        for formset_class in formset_classes:
+            formsets.append(formset_class(instance=object))
+    context = {
+        'form': form,
+        'formsets': formsets,
+    }
+    return render_to_response(
+        template,
+        context,
+        context_instance = RequestContext(request)
+    )
 
 
 @login_required
-def organization_detail(request, organization_id):
+def person_detail(request, object_id):
+    return object_detail(request, queryset=Person.objects.all(),
+                         object_id=object_id)
+
+
+@login_required
+def organization_detail(request, object_id):
     return object_detail(request, queryset=Organization.objects.all(),
-                         object_id=organization_id)
+                         object_id=object_id)

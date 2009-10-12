@@ -1,0 +1,98 @@
+{% if object.notes.all %}
+	<h3>Notes</h3>
+	<ul>
+	{% for note in object.notes.all %}
+		<li>
+			{{ note.content }}
+			{% if note.reference_date %}
+				<br>{{ note.reference_date|date:"F j, Y" }}
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if object.email_addresses.all %}
+	<h3>Email Addresses</h3>
+	<ul>
+	{% for email_address in object.email_addresses.all %}
+		<li>
+			<a href="mailto:{{ email_address.address }}">{{ email_address.address }}</a> 
+			{% if email_address.type %}
+				({{ email_address.get_type_display }})
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if object.phone_numbers.all %}
+	<h3>Phone Numbers</h3>
+	<ul>
+	{% for phone_number in object.phone_numbers.all %}
+		<li>
+			{{ phone_number.number }}
+			{% if phone_number.type %}
+				({{ phone_number.get_type_display }})
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if object.street_addresses.all %}
+	<h3>Street Addresses</h3>
+	<ul>
+	{% for street_address in object.street_addresses.all %}
+		<li>
+			{% if street_address.address %}{{ street_address.address }}<br />{% endif %}
+			{% if street_address.city %}
+				{{ street_address.city }}{% if street_address.state %},{% endif %}
+			{% endif %}
+			{% if street_address.state %}
+				{{ street_address.state }}
+			{% endif %}
+			{% if street_address.zip %}
+				{{ street_address.zip }}
+			{% endif %}
+			{% if street_address.type %}
+				({{ street_address.get_type_display }})
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if object.im_accounts.all %}
+	<h3>IM Accounts</h3>
+	<ul>
+	{% for im_account in object.im_accounts.all %}
+		<li>
+			{{ im_account.username }}
+			{% if im_account.service %}
+				on {{ im_account.get_service_display }}
+			{% endif %}
+			{% if im_account.type %}
+				({{ im_account.get_type_display }})
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if object.websites.all %}
+	<h3>Websites</h3>
+	<ul>
+	{% for website in object.websites.all %}
+		<li>
+			{% if website.name %}
+				{{ website.name }} &ndash;
+			{% endif %}
+			<a href="{{ website.url }}">{{ website.url }}</a>
+			{% if website.type %}
+				({{ website.get_type_display }})
+			{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+{% endif %}

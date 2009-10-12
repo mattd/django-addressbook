@@ -1,0 +1,13 @@
+{% load render_formset_template_for %}
+
+<form id="party-info" method="post" action=".">
+
+	{{ form.as_p }}
+
+	{% for formset in formsets %}
+		{% render_formset_template_for formset in "addressbook/includes/formsets" %}
+	{% endfor %}
+
+	<input type="submit" class="submit" value="Submit" />
+
+</form>
