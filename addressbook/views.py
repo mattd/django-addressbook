@@ -135,7 +135,15 @@ def edit_party(request, form, template, model, object_id):
                 return HttpResponseRedirect(object.get_absolute_url())
     else:
         object = get_object_or_404(model, pk=object_id)
-        form = form(instance=object)
+        if model is Person:
+            # Get the Organization name if it exists and send it to the form.
+            try:
+                initial = {'organization': object.organization.name}
+            except AttributeError:
+                initial = {}
+            form = form(instance=object, initial=initial)
+        else:
+            form = form(instance=object)
         for formset_class in formset_classes:
             formsets.append(formset_class(instance=object))
     context = {
