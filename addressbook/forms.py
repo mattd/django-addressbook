@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import forms
 from django.forms import ModelForm
 
@@ -25,20 +27,19 @@ class PersonForm(ModelForm):
         person. If not, create the organization and then attach the person.
 
         """
+        instance = super(PersonForm, self).save(commit=False)
         org_name = self.cleaned_data['organization']
         try:
             organization = Organization.objects.get(name__iexact=org_name)
         except Organization.DoesNotExist:
-            # Create the Organization and attach it to the form instance.
-            pass
-        else:
-            # Attach the Person to the matched Organization. 
-            pass
-
-        instance = super(PersonForm, self).save(commit=False)
+            organization = Organization(name=org_name, 
+                                        date_added=datetime.now())
+        organization.save()
+        instance.organization = organization
         if commit:
             instance.save()
-        return instance 
+
+        return instance
 
 
 class OrganizationForm(ModelForm):
