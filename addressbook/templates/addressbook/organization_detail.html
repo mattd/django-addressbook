@@ -1,13 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}{{ block.super }} | Organization | {{ object.display_name }}{% endblock %}
+{% block title %}{{ block.super }} | Organization | {{ object }}{% endblock %}
 
 {% block content_title %}Organization{% endblock %}
 
 {% block content %}
 
-	<h2>{{ object.display_name }}</h2> 
+	<h2>{{ object }}</h2> 
 	(<a href="{% url addressbook_organization_edit object.id %}">Edit</a>)
+
+	{% if object.person_set.all %}
+		<h3>People</h3>
+		<ul>
+			{% for person in object.person_set.all %}
+				<li><a href="{{ person.get_absolute_url }}">{{ person }}</a></li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 
 	{% include "addressbook/includes/party_contact_info_display.html" %}
 

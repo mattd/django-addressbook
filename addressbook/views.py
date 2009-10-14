@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, InvalidPage
+from django.core.exceptions import SuspiciousOperation
 from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -167,3 +168,21 @@ def person_detail(request, object_id):
 def organization_detail(request, object_id):
     return object_detail(request, queryset=Organization.objects.all(),
                          object_id=object_id)
+
+
+def autocomplete_organization(request):
+    """An ajax-only url returning a .txt of the query results."""
+    if request.is_ajax():
+        query = request.GET.get('q')
+        organizations = Organization.objects.filter(name__istartswith=query)
+        context = {
+            'organizations': organizations,
+        }
+        return render_to_response(
+            "addressbook/includes/autocomplete_organization.txt",
+            context,
+            context_instance = RequestContext(request)
+        )
+    else:
+        raise SuspiciousOperation("Access Denied")
+

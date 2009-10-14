@@ -2,6 +2,10 @@
 
 {% block title %}{{ block.super }} | People | Edit{% endblock %}
 
+{% block extra_head %}
+	<link type="text/css" href="{{ MEDIA_URL}}/addressbook/css/jquery.autocomplete.css" rel="stylesheet" media="screen">
+{% endblock %}
+
 {% block body_id %}people{% endblock %}
 
 {% block content_title %}Edit Person{% endblock %}
@@ -10,4 +14,9 @@
 
 	{% include "addressbook/includes/party_add_edit_form.html" %}
 
+{% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}addressbook/js/jquery.autocomplete.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}addressbook/js/autocomplete-organization.js"></script>
 {% endblock %}

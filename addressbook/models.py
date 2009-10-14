@@ -209,10 +209,6 @@ class Organization(Party, DateMixin):
     def __unicode__(self):
         return u'%s' % self.name
 
-    @property
-    def display_name(self):
-        return u'%s' % self.name
-
     @permalink
     def get_absolute_url(self):
         return ('addressbook_organization_detail', (), {
@@ -240,12 +236,8 @@ class Person(Party, DateMixin):
         ordering = ('last_name', 'first_name',)
 
     def __unicode__(self):
-        return u'%s' % self.display_name
-        
-    @property
-    def display_name(self):
         return u'%s %s' % (self.first_name, self.last_name)
-
+        
     @permalink
     def get_absolute_url(self):
         return ('addressbook_person_detail', (), {

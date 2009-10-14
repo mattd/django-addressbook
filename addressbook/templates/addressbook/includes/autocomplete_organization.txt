@@ -1,0 +1,3 @@
+{% for organization in organizations %}
+		{{ organization }}
+{% endfor %}

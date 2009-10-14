@@ -86,4 +86,9 @@ urlpatterns = patterns('addressbook.views',
         },
         name="addressbook_organization_edit"
     ),
+    url(
+        r'^autocomplete-organization/$',
+        'autocomplete_organization',
+        name="addressbook_organization_autocomplete"
+    ),
 )
