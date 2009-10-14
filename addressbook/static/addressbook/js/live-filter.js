@@ -9,10 +9,10 @@ jQuery(document).ready(function() {
 	jQuery('#live-filter').keyup(function() {
 		clearTimeout(jQuery.data(this, "timer"));
 		var ms = 400; // milliseconds
-		var wait = setTimeout(function() {
+		var filterDelayed = setTimeout(function() {
 			filterList();
 		}, ms);
-		jQuery.data(this, "timer", wait);
+		jQuery.data(this, "timer", filterDelayed);
 		return false;
 	});
 

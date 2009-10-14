@@ -7,7 +7,7 @@ NOTE: This software is in a pre-alpha state. If you can make use of pieces of th
 
 ##Dependencies
 
-* [django-haystack](http://github.com/toastdriven/django-haystack/) (Optional)
+* [django-haystack](http://github.com/toastdriven/django-haystack/)
 
 ##Enabling Search
 
