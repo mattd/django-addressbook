@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
 	var url = '/addressbook/autocomplete-organization/';
 
 	jQuery("#id_organization").autocomplete(url, {
-		autoFill: true,
+		matchContains: true,
 		max: 50
 	});
 

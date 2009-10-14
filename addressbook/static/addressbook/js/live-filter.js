@@ -7,7 +7,12 @@ jQuery(document).ready(function() {
 	});
 
 	jQuery('#live-filter').keyup(function() {
-		filterList();
+		clearTimeout(jQuery.data(this, "timer"));
+		var ms = 400; // milliseconds
+		var wait = setTimeout(function() {
+			filterList();
+		}, ms);
+		jQuery.data(this, "timer", wait);
 		return false;
 	});
 

@@ -174,7 +174,7 @@ def autocomplete_organization(request):
     """An ajax-only url returning a .txt of the query results."""
     if request.is_ajax():
         query = request.GET.get('q')
-        organizations = Organization.objects.filter(name__istartswith=query)
+        organizations = Organization.objects.filter(name__icontains=query)
         context = {
             'organizations': organizations,
         }
