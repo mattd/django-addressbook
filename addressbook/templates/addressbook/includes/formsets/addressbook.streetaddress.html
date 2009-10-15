@@ -1,5 +1,24 @@
-<h2>Street Addresses</h2>
-{{ formset.management_form }}
-{% for form in formset.forms %}
-	{{ form.as_p }}
-{% endfor %}
+<div class="model-formset">
+	<h2>Street Addresses</h2>
+	{{ formset.management_form }}
+	{% for form in formset.forms %}
+		<div class="{% if form.initial %}bound{% else %}unbound{% endif %} model-form">
+			{{ form.address.errors }}
+			{{ form.address }}
+			{{ form.city.errors }}
+			{{ form.city }}
+			{{ form.state.errors }}
+			{{ form.state}}
+			{{ form.zip.errors }}
+			{{ form.zip }}
+			{{ form.type }}
+			{{ form.id }}
+			<a class="remove" href="#">Remove</a>
+			<span class="delete">{{ form.DELETE }}</span>
+		</div><!--/.model-form-->
+	{% endfor %}
+	<div class="initial-message">
+		<p>Add a street address.</p>
+	</div><!--/.initial-message-->
+	<a class="add" href="#">Add another</a>
+</div><!--/.model-formset-->
