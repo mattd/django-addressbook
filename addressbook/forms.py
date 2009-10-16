@@ -28,14 +28,16 @@ class PersonForm(ModelForm):
 
         """
         instance = super(PersonForm, self).save(commit=False)
-        org_name = self.cleaned_data['organization']
-        try:
-            organization = Organization.objects.get(name__iexact=org_name)
-        except Organization.DoesNotExist:
-            organization = Organization(name=org_name, 
-                                        date_added=datetime.now())
-        organization.save()
-        instance.organization = organization
+        # No blank Organization names, please.
+        org_name = self.cleaned_data['organization'].strip()
+        if org_name:
+            try:
+                organization = Organization.objects.get(name__iexact=org_name)
+            except Organization.DoesNotExist:
+                organization = Organization(name=org_name, 
+                                            date_added=datetime.now())
+            organization.save()
+            instance.organization = organization
         if commit:
             instance.save()
 
