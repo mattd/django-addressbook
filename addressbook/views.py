@@ -57,8 +57,8 @@ def party_list(request, searchqueryset, template):
     )
 
 
-def _create_generic_inlineformset_classes():
-    """Generate generic formset classes for all generically related models."""
+def _create_generic_inlineformsets(post_data=None, object=None):
+    """Generate formsets for all generically related models."""
     generic_models = [EmailAddress, StreetAddress, PhoneNumber, Website, 
                       IMAccount, Note]
     formset_classes = []
@@ -66,8 +66,11 @@ def _create_generic_inlineformset_classes():
         formset_classes.append(generic_inlineformset_factory(
                                generic_model, extra=1, 
                                exclude=('date_added', 'date_modified')))
+    formsets = []
+    for formset_class in formset_classes:
+        formsets.append(formset_class(post_data, instance=object))
 
-    return formset_classes
+    return formsets
 
 
 @login_required
@@ -78,26 +81,23 @@ def add_party(request, form, template):
     generically related content types.
 
     """
-    formset_classes = _create_generic_inlineformset_classes()
-    formsets = []
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
             object = form.save()
-            # Bind the request data and connect each formset to our object,
-            # then save each if valid.
-            for formset_class in formset_classes:
-                formsets.append(formset_class(request.POST, instance=object))
+            formsets = _create_generic_inlineformsets(post_data=request.POST, 
+                                                      object=object)
             for formset in formsets:
                 if formset.is_valid():
                     formset.save()
             # Make sure all formsets passed validation before redirecting.
             if all([formset.is_valid() for formset in formsets]):
                 return HttpResponseRedirect(object.get_absolute_url())
+        else:
+            formsets = _create_formsets()
     else:
         form = form()
-        for formset_class in formset_classes:
-            formsets.append(formset_class())
+        formsets = _create_generic_inlineformsets()
     context = {
         'form': form,
         'formsets': formsets,
@@ -117,17 +117,13 @@ def edit_party(request, form, template, model, object_id):
     generically related content types.
 
     """
-    formset_classes = _create_generic_inlineformset_classes()
-    formsets = []
     if request.method == 'POST':
         object = get_object_or_404(model, pk=object_id)
         form = form(request.POST, instance=object)
         if form.is_valid():
             object = form.save()
-            # Bind the request data and connect each formset to our object,
-            # then save each if valid.
-            for formset_class in formset_classes:
-                formsets.append(formset_class(request.POST, instance=object))
+            formsets = _create_generic_inlineformsets(post_data=request.POST, 
+                                                      object=object)
             for formset in formsets:
                 if formset.is_valid():
                     formset.save()
@@ -145,8 +141,8 @@ def edit_party(request, form, template, model, object_id):
             form = form(instance=object, initial=initial)
         else:
             form = form(instance=object)
-        for formset_class in formset_classes:
-            formsets.append(formset_class(instance=object))
+        formsets = _create_generic_inlineformsets()
+        
     context = {
         'form': form,
         'formsets': formsets,
