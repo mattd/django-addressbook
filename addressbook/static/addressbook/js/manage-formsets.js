@@ -33,9 +33,7 @@ jQuery(document).ready(function() {
 
 			// Set form variables.
 			var theRemoveLink = jQuery(this).find('a.remove');
-			var textFields = jQuery(this).find("input[type='text'],textarea");
-			var selectFields = jQuery(this).find("select");
-			var allFields = jQuery.merge(textFields, selectFields);
+			var fields = jQuery(this).find("input[type='text'],textarea,select");
 
 			// Configure initial form display.
 			jQuery(this).find('.delete').hide();
@@ -43,7 +41,7 @@ jQuery(document).ready(function() {
 			// Setup form behavior.
 			theRemoveLink.click(function() {
 				if (jQuery(this).parent().hasClass('unbound')) {
-					clearFormFields(allFields);
+					clearFormFields(fields);
 				}
 				if (!boundForms.length) {
 					toggleActionLinks();

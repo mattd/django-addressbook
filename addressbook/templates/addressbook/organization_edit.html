@@ -11,3 +11,7 @@
 	{% include "addressbook/includes/forms/party_add_edit_form.html" %}
 
 {% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}addressbook/js/manage-formsets.js"></script>
+{% endblock %}
