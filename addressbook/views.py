@@ -7,9 +7,7 @@ from django.views.generic.list_detail import object_detail
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
-from haystack.views import SearchView
 from haystack.forms import SearchForm 
-from haystack.query import SearchQuerySet
 
 from addressbook.models import Party, Person, Organization, EmailAddress, \
     StreetAddress, PhoneNumber, Website, IMAccount, Note 
