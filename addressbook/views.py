@@ -141,7 +141,7 @@ def edit_party(request, form, template, model, object_id):
             form = form(instance=object, initial=initial)
         else:
             form = form(instance=object)
-        formsets = _create_generic_inlineformsets()
+        formsets = _create_generic_inlineformsets(object=object)
         
     context = {
         'form': form,
