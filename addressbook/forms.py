@@ -36,7 +36,7 @@ class PersonForm(ModelForm):
             except Organization.DoesNotExist:
                 organization = Organization(name=org_name, 
                                             date_added=datetime.now())
-            organization.save()
+                organization.save()
             instance.organization = organization
         if commit:
             instance.save()
