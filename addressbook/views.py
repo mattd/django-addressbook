@@ -92,7 +92,7 @@ def add_party(request, form, template):
             if all([formset.is_valid() for formset in formsets]):
                 return HttpResponseRedirect(object.get_absolute_url())
         else:
-            formsets = _create_formsets()
+            formsets = _create_generic_inline_formsets()
     else:
         form = form()
         formsets = _create_generic_inlineformsets()
