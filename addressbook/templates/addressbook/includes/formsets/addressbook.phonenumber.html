@@ -1,16 +1,18 @@
 <div class="model-formset">
 	<h2>Phone Numbers</h2>
 	{{ formset.management_form }}
-	{% for form in formset.forms %}
-		<div class="{% if form.initial %}bound{% else %}unbound{% endif %} model-form">
-			{{ form.number.errors }}
-			{{ form.number }}
-			{{ form.type }}
-			{{ form.id }}
-			<a class="remove" href="#">Remove</a>
-			<span class="delete">{{ form.DELETE }}</span>
-		</div><!--/.model-form-->
-	{% endfor %}
+	<div class="model-forms">
+		{% for form in formset.forms %}
+			<div class="{% if form.initial %}bound{% else %}unbound{% endif %} model-form">
+				{{ form.number.errors }}
+				{{ form.number }}
+				{{ form.type }}
+				{{ form.id }}
+				<a class="remove" href="#">Remove</a>
+				<span class="delete">{{ form.DELETE }}</span>
+			</div><!--/.model-form-->
+		{% endfor %}
+	</div><!--/.model-forms-->
 	<div class="initial-message">
 		<p>Add a phone number.</p>
 	</div><!--/.initial-message-->
