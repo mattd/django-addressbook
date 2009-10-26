@@ -1,13 +1,14 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
 	// For each formset...
-	jQuery('.content').find('.model-formset').each(function(i) {
+	$('.content').find('.model-formset').each(function(i) {
 
 		// Set formset variables.
-		var boundForms = jQuery(this).find('.bound');
-		var unboundForms = jQuery(this).find('.unbound');
-		var initialMessage = jQuery(this).find('.initial-message');
-		var theAddLink = jQuery(this).find('a.add');
+		var boundForms = $(this).find('.bound');
+		var initialUnboundForm = $(this).find('.unbound');
+		var initialMessage = $(this).find('.initial-message');
+		var theAddLink = $(this).find('a.add');
+		var totalFormsInput = $(this).find("input[id$='TOTAL_FORMS']");
 
 		// Define formset-local functions.
 		function toggleActionLinks() {
@@ -18,50 +19,114 @@ jQuery(document).ready(function() {
 		// Configure initial formset display.
 		theAddLink.hide();
 		if (boundForms.length) {
+			initialUnboundForm.hide();
 			toggleActionLinks();
 		} else {
-			unboundForms.hide();
+			initialUnboundForm.hide();
 			initialMessage.click(function() {
 				toggleActionLinks();
-				unboundForms.show();
+				initialUnboundForm.show();
 				return false;
 			});
 		}
 
+		// Make sure TOTAL_FORMS is set correctly.
+		var initialTotalForms = boundForms.length + 1;
+		totalFormsInput.attr('value',initialTotalForms);
+
+		theAddLink.click(function() {
+			var formset = $(this).parent();
+			var formsContainer = formset.find('.model-forms');
+			var unboundForms = formset.find('.unbound');
+			if ((unboundForms.length == 1) && (unboundForms.attr('style') == 'display: none;')) {
+				initialUnboundForm.show();
+			} else {
+				var newForm = formsContainer.find('div:last-child').clone();
+				clearFormFields(newForm);
+				prepareForm(newForm);
+				newForm.addClass('clone');
+				newForm.appendTo(formsContainer);
+				incrementForm(newForm);
+			}
+			return false;
+		});
+
 		// For each form within the formset...
-		jQuery(this).find('.model-form').each(function(i) {
-
-			// Set form variables.
-			var theRemoveLink = jQuery(this).find('a.remove');
-			var fields = jQuery(this).find("input[type='text'],textarea,select");
-
-			// Configure initial form display.
-			jQuery(this).find('.delete').hide();
-
-			// Setup form behavior.
-			theRemoveLink.click(function() {
-				if (jQuery(this).parent().hasClass('unbound')) {
-					clearFormFields(fields);
-				}
-				if (!boundForms.length) {
-					toggleActionLinks();
-					jQuery(this).parent().hide();
-				}
-				return false;
-			});
-
+		$(this).find('.model-form').each(function(i) {
+			prepareForm($(this));
 		});
 
 	});
 
 });
 
-function clearFormFields(fields) {
-	jQuery.each(fields, function() {
-		if (this.tagName == "select") {
-			jQuery(this).find("option:contains(---)").attr("selected", true);
+function prepareForm(form) {
+	 
+	// Set form variables.
+	var theRemoveLink = form.find('a.remove');
+	var deleteSpan = form.find('.delete');
+
+	// Configure initial form display.
+	deleteSpan.hide();
+
+	// Make sure unbound forms are cleared.
+	 if (form.hasClass('unbound')) {
+		clearFormFields(form);
+	 } 
+
+	// Setup form behavior.
+	theRemoveLink.click(function() {
+		var boundForms = form.parent().find('.bound');
+		if (!boundForms.length) {
+			toggleActionLinks();
+		}
+
+		if (form.hasClass('bound')) {
+			deleteSpan.find('input').attr('checked','checked');
+			form.hide();
+		} else if (form.hasClass('clone')) {
+			deincrementFormCount(form.parents('.model-formset'));
+			form.remove();
 		} else {
-			jQuery(this).val("");
+			clearFormFields(form);
+			form.hide();
+		}
+
+		return false;
+	});
+
+}
+
+function incrementForm(form) {
+	var inputs = form.find("input,textarea,select");
+	inputs.each(function(i) {
+		var re = /\d+/;
+		var inputId = $(this).attr('id');
+		var formNumber = re.exec(inputId);
+		var newFormNumber = parseInt(formNumber) + 1;
+		var inputId = inputId.replace(formNumber,newFormNumber);
+		$(this).attr({'id': inputId, 'name': inputId});
+	});
+	incrementFormCount(form.parents('.model-formset'));
+}
+
+function incrementFormCount(formset){
+	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
+	totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
+}
+
+function deincrementFormCount(formset){
+	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
+	totalFormsInput.val(parseInt(totalFormsInput.val()) - 1);
+}
+
+function clearFormFields(form) {
+	var fields = form.find("input[type='text'],textarea,select");
+	$.each(fields, function() {
+		if (this.tagName == "select") {
+			$(this).find("option:contains(---)").attr("selected", true);
+		} else {
+			$(this).val("");
 		}
 	});
 }
