@@ -20,7 +20,8 @@ function filterList() {
 	$.get(
 		window.location.pathname,
 		{
-			query: $(' [name=q]').val()
+			query: $(' [name=q]').val(),
+			timestamp: new Date().getTime() 
 		},
 		function(data) {
 			$("#results").html(data);
