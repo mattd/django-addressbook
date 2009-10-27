@@ -6,47 +6,57 @@ $(document).ready(function() {
 		// Set formset variables.
 		var boundForms = $(this).find('.bound');
 		var initialUnboundForm = $(this).find('.unbound');
-		var initialMessage = $(this).find('.initial-message');
 		var theAddLink = $(this).find('a.add');
 		var totalFormsInput = $(this).find("input[id$='TOTAL_FORMS']");
+		var initialMessage = $(this).find('.initial-message');
 
-		// Define formset-local functions.
-		function toggleActionLinks() {
-			initialMessage.toggle();
-			theAddLink.toggle();
-		}
-		 
 		// Configure initial formset display.
-		theAddLink.hide();
-		if (boundForms.length) {
-			initialUnboundForm.hide();
-			toggleActionLinks();
+		initialUnboundForm.hide();
+		if (!boundForms.length) {
+			theAddLink.hide();
 		} else {
-			initialUnboundForm.hide();
-			initialMessage.click(function() {
-				toggleActionLinks();
-				initialUnboundForm.show();
-				return false;
-			});
+			initialMessage.hide();
 		}
 
 		// Make sure TOTAL_FORMS is set correctly.
 		var initialTotalForms = boundForms.length + 1;
 		totalFormsInput.attr('value',initialTotalForms);
 
+		initialMessage.click(function() {
+			$(this).hide();	
+			initialUnboundForm.show();
+			theAddLink.show();
+			return false;
+		});
+
 		theAddLink.click(function() {
 			var formsContainer = $(this).parent().find('.model-forms');
 			var unboundForms = formsContainer.find('.unbound');
-			if ((unboundForms.length == 1) && (unboundForms.attr('style') == 'display: none;')) {
+
+			if (unboundForms.attr('style') == 'display: none;') {
 				initialUnboundForm.show();
 			} else {
-				var newForm = formsContainer.find('div:last-child').clone();
+				var newForm = initialUnboundForm.clone();
+				var newFormInputs = newForm.find("input,textarea,select");
+				// Django's formset forms are zero-indexed, so don't increment here.
+				var newFormIndex = $(this).parent().find('.model-form').length;
+
 				clearFormFields(newForm);
 				prepareForm(newForm);
-				newForm.addClass('clone');
 				newForm.appendTo(formsContainer);
-				incrementForm(newForm);
+				newFormInputs.each(function(i) {
+					var inputId = $(this).attr('id');
+					var inputName = $(this).attr('name');
+					var re = /\d+/;
+					var formIndex = re.exec(inputId);
+					$(this).attr({
+						'id': inputId.replace(formIndex,newFormIndex), 
+						'name': inputName.replace(formIndex,newFormIndex)
+					});
+				});
+				totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
 			}
+
 			return false;
 		});
 
@@ -64,6 +74,7 @@ function prepareForm(form) {
 	// Set form variables.
 	var theRemoveLink = form.find('a.remove');
 	var deleteSpan = form.find('.delete');
+	var formset = form.parents('.model-formset');
 
 	// Configure initial form display.
 	deleteSpan.hide();
@@ -75,50 +86,22 @@ function prepareForm(form) {
 
 	// Setup form behavior.
 	theRemoveLink.click(function() {
-		var boundForms = form.parent().find('.bound');
-		if (!boundForms.length) {
-			toggleActionLinks();
-		}
 
+		form.hide();
 		if (form.hasClass('bound')) {
 			deleteSpan.find('input').attr('checked','checked');
-			form.hide();
-		} else if (form.hasClass('clone')) {
-			deincrementTotalForms(form.parents('.model-formset'));
-			form.remove();
 		} else {
 			clearFormFields(form);
-			form.hide();
+		}
+
+		if (form.siblings('.model-form:visible').length == 0) {
+			formset.find('.add').hide();
+			formset.find('.initial-message').show();			
 		}
 
 		return false;
 	});
 
-}
-
-function incrementForm(form) {
-	var inputs = form.find("input,textarea,select");
-	inputs.each(function(i) {
-		var re = /\d+/;
-		var inputId = $(this).attr('id');
-		var inputName = $(this).attr('name');
-		var formNumber = re.exec(inputId);
-		var newFormNumber = parseInt(formNumber) + 1;
-		var inputId = inputId.replace(formNumber,newFormNumber);
-		var inputName = inputName.replace(formNumber,newFormNumber);
-		$(this).attr({'id': inputId, 'name': inputName});
-	});
-	incrementTotalForms(form.parents('.model-formset'));
-}
-
-function incrementTotalForms(formset) {
-	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
-	totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
-}
-
-function deincrementTotalForms(formset) {
-	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
-	totalFormsInput.val(parseInt(totalFormsInput.val()) - 1);
 }
 
 function clearFormFields(form) {
