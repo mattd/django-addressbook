@@ -1,31 +1,29 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
-	jQuery('#live-filter .submit').hide()
-
-	jQuery('#live-filter').submit(function() {
+	$('#live-filter').submit(function() {
 		return false;
 	});
 
-	jQuery('#live-filter').keyup(function() {
-		clearTimeout(jQuery.data(this, "timer"));
-		var ms = 400; // milliseconds
+	$('#live-filter').keyup(function() {
+		clearTimeout($.data(this, "timer"));
+		var ms = 200; // milliseconds
 		var filterDelayed = setTimeout(function() {
 			filterList();
 		}, ms);
-		jQuery.data(this, "timer", filterDelayed);
+		$.data(this, "timer", filterDelayed);
 		return false;
 	});
 
 });
 
 function filterList() {
-	jQuery.get(
+	$.get(
 		window.location.pathname,
 		{
-			query: jQuery(' [name=q]').val()
+			query: $(' [name=q]').val()
 		},
 		function(data) {
-			jQuery("#results").html(data);
+			$("#results").html(data);
 		}
 	)
 }
