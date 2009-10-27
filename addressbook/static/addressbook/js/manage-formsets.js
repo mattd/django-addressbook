@@ -35,9 +35,8 @@ $(document).ready(function() {
 		totalFormsInput.attr('value',initialTotalForms);
 
 		theAddLink.click(function() {
-			var formset = $(this).parent();
-			var formsContainer = formset.find('.model-forms');
-			var unboundForms = formset.find('.unbound');
+			var formsContainer = $(this).parent().find('.model-forms');
+			var unboundForms = formsContainer.find('.unbound');
 			if ((unboundForms.length == 1) && (unboundForms.attr('style') == 'display: none;')) {
 				initialUnboundForm.show();
 			} else {

@@ -62,7 +62,7 @@ def _create_generic_inlineformsets(post_data=None, object=None):
     formset_classes = []
     for generic_model in generic_models:
         formset_classes.append(generic_inlineformset_factory(
-                               generic_model, 
+                               generic_model, extra=1,
                                exclude=('date_added', 'date_modified')))
     formsets = []
     for formset_class in formset_classes:
