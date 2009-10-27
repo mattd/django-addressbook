@@ -70,9 +70,9 @@ function prepareForm(form) {
 	deleteSpan.hide();
 
 	// Make sure unbound forms are cleared.
-	 if (form.hasClass('unbound')) {
+	if (form.hasClass('unbound')) {
 		clearFormFields(form);
-	 } 
+	} 
 
 	// Setup form behavior.
 	theRemoveLink.click(function() {
@@ -85,7 +85,7 @@ function prepareForm(form) {
 			deleteSpan.find('input').attr('checked','checked');
 			form.hide();
 		} else if (form.hasClass('clone')) {
-			deincrementFormCount(form.parents('.model-formset'));
+			deincrementTotalForms(form.parents('.model-formset'));
 			form.remove();
 		} else {
 			clearFormFields(form);
@@ -102,20 +102,22 @@ function incrementForm(form) {
 	inputs.each(function(i) {
 		var re = /\d+/;
 		var inputId = $(this).attr('id');
+		var inputName = $(this).attr('name');
 		var formNumber = re.exec(inputId);
 		var newFormNumber = parseInt(formNumber) + 1;
 		var inputId = inputId.replace(formNumber,newFormNumber);
-		$(this).attr({'id': inputId, 'name': inputId});
+		var inputName = inputName.replace(formNumber,newFormNumber);
+		$(this).attr({'id': inputId, 'name': inputName});
 	});
-	incrementFormCount(form.parents('.model-formset'));
+	incrementTotalForms(form.parents('.model-formset'));
 }
 
-function incrementFormCount(formset){
+function incrementTotalForms(formset) {
 	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
 	totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
 }
 
-function deincrementFormCount(formset){
+function deincrementTotalForms(formset) {
 	var totalFormsInput = formset.find("input[id$='TOTAL_FORMS']");
 	totalFormsInput.val(parseInt(totalFormsInput.val()) - 1);
 }
