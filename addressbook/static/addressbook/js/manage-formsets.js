@@ -25,37 +25,33 @@ $(document).ready(function() {
 		initialMessage.click(function() {
 			$(this).hide();	
 			initialUnboundForm.show().find(":first").focus();
-			return false;
+			theAddLink.show();
 		});
 
 		theAddLink.click(function() {
 			var formsContainer = $(this).parent().find('.model-forms');
 			var unboundForms = formsContainer.find('.unbound');
 
-			if (unboundForms.is(':hidden')) {
-				initialUnboundForm.show().find(":first").focus();
-			} else {
-				var newForm = initialUnboundForm.clone();
-				var newFormInputs = newForm.find("input,textarea,select");
-				// Django's formset forms are zero-indexed, so don't increment here.
-				var newFormIndex = $(this).parent().find('.model-form').length;
+			var newForm = initialUnboundForm.clone();
+			var newFormInputs = newForm.find("input,textarea,select");
+			// Django's formset forms are zero-indexed, so don't increment here.
+			var newFormIndex = $(this).parent().find('.model-form').length;
 
-				clearFormFields(newForm);
-				prepareForm(newForm);
-				newForm.appendTo(formsContainer);
-				newFormInputs.each(function(i) {
-					var inputId = $(this).attr('id');
-					var inputName = $(this).attr('name');
-					var re = /\d+/;
-					var formIndex = re.exec(inputId);
-					$(this).attr({
-						'id': inputId.replace(formIndex,newFormIndex), 
-						'name': inputName.replace(formIndex,newFormIndex)
-					});
+			clearFormFields(newForm);
+			prepareForm(newForm);
+			newForm.appendTo(formsContainer);
+			newFormInputs.each(function(i) {
+				var inputId = $(this).attr('id');
+				var inputName = $(this).attr('name');
+				var re = /\d+/;
+				var formIndex = re.exec(inputId);
+				$(this).attr({
+					'id': inputId.replace(formIndex,newFormIndex), 
+					'name': inputName.replace(formIndex,newFormIndex)
 				});
-				newForm.find(":first").focus();
-				totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
-			}
+			});
+			newForm.find(":first").focus();
+			totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
 
 			return false;
 		});
@@ -75,7 +71,6 @@ function prepareForm(form) {
 	var theRemoveLink = form.find('a.remove');
 	var deleteSpan = form.find('.delete');
 	var fields = form.find("input[type='text'],textarea,select");
-	var formset = form.parents('.model-formset');
 
 	// Configure initial form display.
 	deleteSpan.hide();
@@ -87,13 +82,14 @@ function prepareForm(form) {
 
 	// Setup form behavior.
 	theRemoveLink.click(function() {
+		var formset = form.parents('.model-formset');
 		form.hide();
 		if (form.hasClass('bound')) {
 			deleteSpan.find('input').attr('checked','checked');
 		} else {
 			clearFormFields(form);
 		}
-		if (form.siblings('.model-form:visible').length == 0) {
+		if (formset.find('.model-form:visible').length == 0) {
 			formset.find('.add').hide();
 			formset.find('.initial-message').show();			
 		}
