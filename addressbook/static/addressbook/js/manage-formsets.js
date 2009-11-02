@@ -24,8 +24,7 @@ $(document).ready(function() {
 
 		initialMessage.click(function() {
 			$(this).hide();	
-			initialUnboundForm.show();
-			theAddLink.show();
+			initialUnboundForm.show().find(":first").focus();
 			return false;
 		});
 
@@ -33,8 +32,8 @@ $(document).ready(function() {
 			var formsContainer = $(this).parent().find('.model-forms');
 			var unboundForms = formsContainer.find('.unbound');
 
-			if (unboundForms.attr('style') == 'display: none;') {
-				initialUnboundForm.show();
+			if (unboundForms.is(':hidden')) {
+				initialUnboundForm.show().find(":first").focus();
 			} else {
 				var newForm = initialUnboundForm.clone();
 				var newFormInputs = newForm.find("input,textarea,select");
@@ -54,6 +53,7 @@ $(document).ready(function() {
 						'name': inputName.replace(formIndex,newFormIndex)
 					});
 				});
+				newForm.find(":first").focus();
 				totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
 			}
 
@@ -74,6 +74,7 @@ function prepareForm(form) {
 	// Set form variables.
 	var theRemoveLink = form.find('a.remove');
 	var deleteSpan = form.find('.delete');
+	var fields = form.find("input[type='text'],textarea,select");
 	var formset = form.parents('.model-formset');
 
 	// Configure initial form display.
@@ -86,21 +87,28 @@ function prepareForm(form) {
 
 	// Setup form behavior.
 	theRemoveLink.click(function() {
-
 		form.hide();
 		if (form.hasClass('bound')) {
 			deleteSpan.find('input').attr('checked','checked');
 		} else {
 			clearFormFields(form);
 		}
-
 		if (form.siblings('.model-form:visible').length == 0) {
 			formset.find('.add').hide();
 			formset.find('.initial-message').show();			
 		}
-
 		return false;
 	});
+
+	/*
+	fields.bind("focus", function(e) {
+		$(this).attr('class','has-focus');
+	});
+
+	fields.bind("blur", function(e) {
+		$(this).removeAttr('class');
+	});
+	*/
 
 }
 
