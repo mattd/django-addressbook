@@ -30,28 +30,32 @@ $(document).ready(function() {
 
 		theAddLink.click(function() {
 			var formsContainer = $(this).parent().find('.model-forms');
-			var unboundForms = formsContainer.find('.unbound');
 
-			var newForm = initialUnboundForm.clone();
-			var newFormInputs = newForm.find("input,textarea,select");
-			// Django's formset forms are zero-indexed, so don't increment here.
-			var newFormIndex = $(this).parent().find('.model-form').length;
+			if (initialUnboundForm.is(':hidden')) {
+				formsContainer.append(initialUnboundForm);
+				initialUnboundForm.show().find(":first").focus();
+			} else {
+				var newForm = initialUnboundForm.clone();
+				var newFormInputs = newForm.find("input,textarea,select");
+				// Django's formset forms are zero-indexed, so don't increment here.
+				var newFormIndex = $(this).parent().find('.model-form').length;
 
-			clearFormFields(newForm);
-			prepareForm(newForm);
-			newForm.appendTo(formsContainer);
-			newFormInputs.each(function(i) {
-				var inputId = $(this).attr('id');
-				var inputName = $(this).attr('name');
-				var re = /\d+/;
-				var formIndex = re.exec(inputId);
-				$(this).attr({
-					'id': inputId.replace(formIndex,newFormIndex), 
-					'name': inputName.replace(formIndex,newFormIndex)
+				clearFormFields(newForm);
+				prepareForm(newForm);
+				newForm.appendTo(formsContainer);
+				newFormInputs.each(function(i) {
+					var inputId = $(this).attr('id');
+					var inputName = $(this).attr('name');
+					var re = /\d+/;
+					var formIndex = re.exec(inputId);
+					$(this).attr({
+						'id': inputId.replace(formIndex,newFormIndex), 
+						'name': inputName.replace(formIndex,newFormIndex)
+					});
 				});
-			});
-			newForm.find(":first").focus();
-			totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
+				newForm.find(":first").focus();
+				totalFormsInput.val(parseInt(totalFormsInput.val()) + 1);
+			}
 
 			return false;
 		});
@@ -95,16 +99,6 @@ function prepareForm(form) {
 		}
 		return false;
 	});
-
-	/*
-	fields.bind("focus", function(e) {
-		$(this).attr('class','has-focus');
-	});
-
-	fields.bind("blur", function(e) {
-		$(this).removeAttr('class');
-	});
-	*/
 
 }
 
