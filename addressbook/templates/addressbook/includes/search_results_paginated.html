@@ -1,11 +1,13 @@
+{% load render_module_template_for %}
+
 <div id="results">
 
 	{% if page.object_list %}
-		{% for result in page.object_list %}
+			{% for object in page.object_list %}
 			<div>
-				{{ result.rendered|safe }}
+				{% render_module_template_for object in "addressbook/includes/modules" %}
 			</div>
-		{% endfor %}
+			{% endfor %}
 	{% else %}
 		<p>No results found.</p>
 	{% endif %}

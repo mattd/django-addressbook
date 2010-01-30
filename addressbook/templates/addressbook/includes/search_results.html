@@ -1,9 +1,11 @@
+{% load render_module_template_for %}
+
 <div id="results">
 
-	{% if object_list %}
-		{% for result in object_list %}
+	{% if results %}
+		{% for object in results %}
 			<div>
-				{{ result.rendered|safe }}
+				{% render_module_template_for object in "includes/modules" %}
 			</div>
 		{% endfor %}
 	{% else %}

@@ -1,1 +1,0 @@
-{{ object.first_name }} {{ object.middle_name }} {{ object.last_name }}

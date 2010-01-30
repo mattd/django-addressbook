@@ -45,6 +45,10 @@ class EmailAddress(GenericRelationshipMixin, DateMixin):
     type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
                             blank=True, null=True)
 
+    @property
+    def search_index(self):
+        return self.address
+
     class Meta:
         verbose_name = _('email address')
         verbose_name_plural = _('email addresses')
@@ -67,6 +71,11 @@ class StreetAddress(GenericRelationshipMixin, DateMixin):
     zip = models.CharField(max_length=10, blank=True, null=True)
     type = models.CharField(max_length=15, choices=TYPE_CHOICES, blank=True,
                             null=True)
+
+    @property
+    def search_index(self):
+        frags = [self.address, self.city, self.state, self.zip]
+        return ' '.join(frags)
 
     class Meta:
         verbose_name = _('street address')
@@ -92,6 +101,10 @@ class PhoneNumber(GenericRelationshipMixin, DateMixin):
     type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
                             blank=True, null=True)
 
+    @property
+    def search_index(self):
+        return self.number
+
     class Meta:
         verbose_name = _('phone number')
         verbose_name_plural = _('phone numbers')
@@ -111,6 +124,10 @@ class Website(GenericRelationshipMixin, DateMixin):
     url = models.URLField(_('url'), max_length=100, blank=True, null=True)
     type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
                             blank=True, null=True)
+
+    @property
+    def search_index(self):
+        return self.name + ' ' + self.url
 
     class Meta:
         verbose_name = _('website')
@@ -146,6 +163,10 @@ class IMAccount(GenericRelationshipMixin, DateMixin):
     type = models.CharField(_('type'), max_length=15, choices=TYPE_CHOICES, 
                             blank=True, null=True)
 
+    @property
+    def search_index(self):
+        return self.username
+
     class Meta:
         verbose_name = _('IM account')
         verbose_name_plural = _('IM accounts')
@@ -159,6 +180,10 @@ class Note(GenericRelationshipMixin, DateMixin):
     content = models.TextField(_('content'))
     reference_date = models.DateTimeField(_('reference date'), null=True, 
                                           blank=True)
+
+    @property
+    def search_index(self):
+        return self.content
 
     class Meta:
         verbose_name = _('note')
@@ -201,6 +226,10 @@ class Organization(Party, DateMixin):
     """
     name = models.CharField(_('name'), max_length=200)
 
+    @property
+    def search_index(self):
+        return self.name
+
     class Meta:
         verbose_name = _('organization')
         verbose_name_plural = _('organizations')
@@ -229,6 +258,11 @@ class Person(Party, DateMixin):
                                    null=True)
     last_name = models.CharField(_('last name'), max_length=50, blank=True, 
                                  null=True)
+
+    @property
+    def search_index(self):
+        frags = [self.first_name, self.middle_name, self.last_name]
+        return ' '.join(frags)
 
     class Meta:
         verbose_name = _('person')

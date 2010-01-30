@@ -1,8 +1,6 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 
-from haystack.query import SearchQuerySet
-
 from addressbook.models import Organization, Person
 from addressbook.forms import OrganizationForm, PersonForm
 
@@ -10,10 +8,7 @@ urlpatterns = patterns('addressbook.views',
     url(
         r'^$',
         'party_list',
-        {
-            'searchqueryset': SearchQuerySet().models(Organization, Person).order_by('sort_name'),
-            'template': 'addressbook/dashboard.html',
-        },
+        {'template': 'addressbook/dashboard.html',},
         name="addressbook_dashboard"
     ),
 
@@ -21,10 +16,7 @@ urlpatterns = patterns('addressbook.views',
     url(
         r'^people/$', 
         'party_list',
-        {
-            'searchqueryset': SearchQuerySet().models(Person).order_by('sort_name'),
-            'template': 'addressbook/people.html',
-        },
+        {'template': 'addressbook/people.html',},
         name="addressbook_people"
     ),
     url(
@@ -56,10 +48,7 @@ urlpatterns = patterns('addressbook.views',
     url(
         r'^organizations/$', 
         'party_list', 
-        {
-            'searchqueryset': SearchQuerySet().models(Organization).order_by('sort_name'),
-            'template': 'addressbook/organizations.html',
-        },
+        {'template': 'addressbook/organizations.html',},
         name="addressbook_organizations"
     ),
     url(

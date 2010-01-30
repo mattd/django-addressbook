@@ -7,44 +7,44 @@ from django.views.generic.list_detail import object_detail
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
-from haystack.forms import SearchForm 
-
 from addressbook.models import Party, Person, Organization, EmailAddress, \
     StreetAddress, PhoneNumber, Website, IMAccount, Note 
 
-
 @login_required
-def party_list(request, searchqueryset, template):
-    form = SearchForm()
-    if request.GET.get('q'):
-        form = SearchForm(request.GET, searchqueryset=searchqueryset)
-        if form.is_valid():
-            searchqueryset = form.search()
-    
+def party_list(request, template):
     if request.is_ajax():
-        # The live filter was used. Return a filtered list.
-        query = request.GET.get('query')
-        searchqueryset = searchqueryset.auto_query(query)
-        context = {
-            'object_list': searchqueryset,
-        }
+        query = request.GET.get('q', '')
+        objects = []
+        for party in Party.objects.all():
+            try:
+               object = party.person 
+            except Person.DoesNotExist:
+                object = party.organization
+            objects.append(object)
+        results = []
+        for object in objects: 
+            if query.lower() in object.search_index.lower():
+                results.append(object)
         return render_to_response(
             "addressbook/includes/search_results.html",
-            context,
+            {'results': results,},
             context_instance = RequestContext(request)
         )
-
-    # SearchQuerySet is instantiated in urls.py, thus only loaded once per
-    # server process. Get a fresh instance.
-    searchqueryset = searchqueryset.all()
-    # Paginate the results. Note we don't send pagination on ajax requests.
-    paginator = Paginator(searchqueryset, 20)
+        
+    results = []
+    for party in Party.objects.all():
+        try:
+            object = party.person 
+        except Person.DoesNotExist:
+            object = party.organization
+        results.append(object)
+    paginator = Paginator(results, 20)
     try:
         page = paginator.page(int(request.GET.get('page',1)))
     except InvalidPage:
         raise Http404("No such page of results!")
+
     context = {
-        'form': form,
         'page': page,
         'paginator': paginator,
     }
