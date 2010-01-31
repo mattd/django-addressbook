@@ -1,14 +1,17 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 
-from addressbook.models import Organization, Person
+from addressbook.models import Party, Organization, Person
 from addressbook.forms import OrganizationForm, PersonForm
 
 urlpatterns = patterns('addressbook.views',
     url(
         r'^$',
         'party_list',
-        {'template': 'addressbook/dashboard.html',},
+        {
+            'model': Party,
+            'template': 'addressbook/dashboard.html',
+        },
         name="addressbook_dashboard"
     ),
 
@@ -16,7 +19,10 @@ urlpatterns = patterns('addressbook.views',
     url(
         r'^people/$', 
         'party_list',
-        {'template': 'addressbook/people.html',},
+        {
+            'model': Person,
+            'template': 'addressbook/people.html',
+        },
         name="addressbook_people"
     ),
     url(
@@ -48,7 +54,10 @@ urlpatterns = patterns('addressbook.views',
     url(
         r'^organizations/$', 
         'party_list', 
-        {'template': 'addressbook/organizations.html',},
+        {
+            'model': Organization,
+            'template': 'addressbook/organizations.html',
+        },
         name="addressbook_organizations"
     ),
     url(

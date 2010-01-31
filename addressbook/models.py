@@ -193,6 +193,12 @@ class Note(GenericRelationshipMixin, DateMixin):
         return u'%s' % self.content
 
 
+class PartyManager(models.Manager):
+    """Custom manager for the Party model."""
+    def children(self):
+        return sorted([p.child for p in self.all()], key=lambda k: k.sort_name)
+
+
 class Party(models.Model):
     """Party Model
 
@@ -209,6 +215,15 @@ class Party(models.Model):
     websites = generic.GenericRelation(Website, blank=True, null=True)
     im_accounts = generic.GenericRelation(IMAccount, blank=True, null=True)
     notes = generic.GenericRelation(Note, blank=True, null=True)
+
+    objects = PartyManager()
+
+    @property
+    def child(self):
+        try:
+            return self.person
+        except Person.DoesNotExist:
+            return self.organization
 
     class Meta:
         verbose_name = _('party')
@@ -230,10 +245,14 @@ class Organization(Party, DateMixin):
     def search_index(self):
         return self.name
 
+    @property
+    def sort_name(self):
+        return self.name
+
     class Meta:
+        ordering = ('name',)
         verbose_name = _('organization')
         verbose_name_plural = _('organizations')
-        ordering = ('name',)
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -264,10 +283,15 @@ class Person(Party, DateMixin):
         frags = [self.first_name, self.middle_name, self.last_name]
         return ' '.join(frags)
 
+    @property
+    def sort_name(self):
+        frags = [self.first_name, self.middle_name, self.last_name]
+        return ' '.join(frags)
+
     class Meta:
         verbose_name = _('person')
         verbose_name_plural = _('people')
-        ordering = ('last_name', 'first_name',)
+        ordering = ('last_name', 'first_name', 'middle_name',)
 
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)

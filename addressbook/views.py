@@ -11,18 +11,15 @@ from addressbook.models import Party, Person, Organization, EmailAddress, \
     StreetAddress, PhoneNumber, Website, IMAccount, Note 
 
 @login_required
-def party_list(request, template):
+def party_list(request, model, template):
+    try:
+        queryset = model.objects.children()
+    except AttributeError:
+        queryset = model.objects.all()
     if request.is_ajax():
-        query = request.GET.get('q', '')
-        objects = []
-        for party in Party.objects.all():
-            try:
-               object = party.person 
-            except Person.DoesNotExist:
-                object = party.organization
-            objects.append(object)
+        query = request.GET.get('query', '').replace('+', ' ')
         results = []
-        for object in objects: 
+        for object in queryset:
             if query.lower() in object.search_index.lower():
                 results.append(object)
         return render_to_response(
@@ -30,15 +27,7 @@ def party_list(request, template):
             {'results': results,},
             context_instance = RequestContext(request)
         )
-        
-    results = []
-    for party in Party.objects.all():
-        try:
-            object = party.person 
-        except Person.DoesNotExist:
-            object = party.organization
-        results.append(object)
-    paginator = Paginator(results, 20)
+    paginator = Paginator(queryset, 20)
     try:
         page = paginator.page(int(request.GET.get('page',1)))
     except InvalidPage:
